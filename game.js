@@ -27,7 +27,51 @@ var debug = false,
 		fluxLog		: [],
 		money       : 2000,
 		date  		: {minute:0,hour:0,day:1,month:1,year:4620},
-		questions   : ['THEMSELVES','OTHER RACES','THE ANCIENTS','OLD EMPIRE','GENERAL INFO']
+		questions   : ['THEMSELVES','OTHER RACES','THE ANCIENTS','OLD EMPIRE','GENERAL INFO'],
+		convoLog	: {
+							'ELOWAN':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							},
+							'MECHAN 9':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							},
+							'SPEMIN':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							},
+							'THRYNN':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							},
+							'VELOXI':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							},
+							'GAZURTOID':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							}
+						}
 	},
 	sf2Options = {
 		v           : 2,
@@ -42,7 +86,51 @@ var debug = false,
 		fluxLog		: [],
 		money       : 2000,
 		date  		: {minute:0,hour:0,day:1,month:1,year:4620},
-		questions   : ['THEMSELVES','OTHER RACES','THE PAST','TRADE','GENERAL INFO']
+		questions   : ['THEMSELVES','OTHER RACES','THE PAST','TRADE','GENERAL INFO'],
+		convoLog	: {
+							'ELOWAN':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							},
+							'MECHAN 9':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							},
+							'SPEMIN':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							},
+							'THRYNN':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							},
+							'VELOXI':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							},
+							'GAZURTOID':{
+								'THEMSELVES':0,
+								'OTHER RACES':0,
+								'THE ANCIENTS':0,
+								'OLD EMPIRE':0,
+								'GENERAL INFO':0
+							}
+						}
 	},
 	gameSave				 = {},
 	game                     = sf1Options,
@@ -133,7 +221,13 @@ var debug = false,
  		hp                  : 100,
  		hpMax               : 100,
  		isInEncounter       : false,
- 		isCommunicating 	: false
+ 		isCommunicating 	: false,
+ 		captain				: {},
+ 		scienceOfficer 		: {},
+ 		navigator 			: {},
+ 		engineer 			: {},
+ 		commsOfficer 		: {},
+ 		doctor 				: {}
  	},
  	ship = shipOptions,
  	isInNebula = false,
@@ -148,13 +242,8 @@ var debug = false,
 	distanceVal = returnText('',20,blue),
 	fuelVal = returnText('',20,blue),
 	cursor = new Shape(),
-	spectralClasses = {O:'blue',B:blue,A:'green',F:'white',G:'yellow',K:'orange',M:'red'}
-	spectralClassSize = {O:1.6,B:1.5,A:1,F:0.5,G:0.6,K:0.7,M:1.3}
-	statements = [
-		['I want to be your friend.','Will you be my friend?'],
-		['You smell like fear and death!','Prepare to join the Arth Empire alien scum!'],
-		['Oh please be merciful!','We grovel at your feet!']
-	],
+	spectralClasses = {O:'blue',B:blue,A:'green',F:'white',G:'yellow',K:'orange',M:'red'},
+	spectralClassSize = {O:1.6,B:1.5,A:1,F:0.5,G:0.6,K:0.7,M:1.3},
 	// themselvesQuestions = [
 	// 	['Please tell us about yourselves.','We would appreciate information about your race.'],					
 	// 	['We desire information about your pathetic species.','You will tell us about your race or we will destroy you!'],					
@@ -208,7 +297,11 @@ var debug = false,
 	optionsButton = drawButton({y:50*5,label:'settings',width:295,onClick:handleOptionsButtonClick}),
 	dialogTextArray = [],
 	commsTextArray = [],
-	raceNames = Object.keys(personelRaces)
+	raceNames = Object.keys(personelRaces),
+	subjectOfConversation = '',
+	questionAsked = false,
+	responseRecieved = false,
+	commDelay = -1
 	
 controlButtonsContainer.addChild(toggleShieldsButton,toggleWeaponsButton,showStarmapButton,distressCallButton,engineerButton,medicalButton,optionsButton)
 starPortButtons.addChild(dockingBayBtn,opsBtn,shipConfigBtn,crewBtn,tradeDepotBtn)
@@ -460,11 +553,14 @@ function init(){
 		    game=gameSave.game
 		    ship=gameSave.ship
 			showSplashScreen = false
-			if(game.questions == null) game.questions = sf1Options.questions
-			// ship.status = 4
-			// if(ship.status==5)ship.status=isInSystem
-			// if(game.date == null) game.date = {minute:0,hour:0,day:1,month:1,year:4620}
-			// if(ship.isInEncounter==null)ship.isInEncounter=true
+			if(game.convoLog == null) game.convoLog = sf1Options.convoLog
+			
+ 			if(ship.captain	== null) ship.captain =  {race:'HUMAN',name:'Kirk',science:100,navigation:100,engineering:100,comms:100,medical:100,vitality:100}
+ 			if(ship.scienceOfficer == null) ship.scienceOfficer	= {race:'HUMAN',name:'Spock',science:250,navigation:100,engineering:100,comms:50,medical:50,vitality:100}
+ 			if(ship.navigator == null) ship.navigator =  {race:'VELOX',name:'NAXLUM',science:50,navigation:100,engineering:100,comms:50,medical:50,vitality:100}
+ 			if(ship.engineer == null) ship.engineer =  {race:'VELOX',name:'Egoplox',science:50,navigation:100,engineering:150,comms:50,medical:50,vitality:100}
+ 			if(ship.commsOfficer == null) ship.commsOfficer	= {race:'ELOWAN',name:'Uhura',science:20,navigation:20,engineering:50,comms:250,medical:50,vitality:100}
+ 			if(ship.doctor 	== null) ship.doctor =  {race:'ELOWAN',name:'Bones',science:50,navigation:20,engineering:30,comms:50,medical:150,vitality:100}
 			
 			doSaveGame=true
 			if(shipIsDocked()){
@@ -499,11 +595,12 @@ function planetIsStarport(){
 function handleHailButtonClick(){
 	closePopup()
 	beginCommunications() 
-	buildCommsPopup()
-	addTextToDialog('Sorry Sir, I can\'t find the microphone.')
+	addTextToComms('### TRANSMITTING:\n\n  '+rae(hailOrResponse[mood]),'grey')	
+	buildCommsPopup()	
+	// addTextToDialog('Sorry Sir, I can\'t find the microphone.')
 }
 function handleStatementButtonClick(){
-	addTextToComms(rae(statements[mood]))
+	addTextToComms('### TRANSMITTING:\n\n  '+rae(statements[mood]),'grey')
 	buildCommsPopup()
 }
 function handleQuestionButtonClick(){
@@ -521,23 +618,39 @@ function handleQuestionButtonClick(){
 }
 function handlePostureButtonClick(){}
 function handleAskQuestionButtonClick(event){
-	var subject = event.currentTarget.name
-	console.log("subject", subject);
-	addTextToComms(rae(questions[subject][mood]))
+	subjectOfConversation = event.currentTarget.name
+	addTextToComms('### TRANSMITTING:\n\n  '+rae(questions[subjectOfConversation][mood])+'\n\n### AWAITING RESPONSE...','grey')	
+	//addTextToComms('\n AWAITING RESPONSE...','grey')	
+	questionAsked = true
+	responseRecieved = false
 	buildCommsPopup()
 }
-// function handleOthersButtonClick(){
-// 	addTextToComms(rae(questions['OTHER RACES'][mood]))
-// 	buildCommsPopup()
-// }
-// function handlePastButtonClick(){
-// 	addTextToComms(rae(questions['THE PAST'][mood]))
-// 	buildCommsPopup()
-// }
-// function handleOldEmpireButtonClick(){
-// 	addTextToComms(rae(oldEmpireQuestions[mood]))
-// 	buildCommsPopup()
-// }
+function translate(race,text){
+	var words = text.split(' ')
+	console.log("words", words);
+	var commsOfficerSkillLevel = ship.commsOfficer.comms
+	console.log("commsOfficerSkillLevel", commsOfficerSkillLevel);
+	var untranslatedWords = 100 - (100*(commsOfficerSkillLevel/200))
+	console.log("untranslatedWords", untranslatedWords);
+	if(untranslatedWords>0){
+		for (var i = 0; i < untranslatedWords; i++) {
+			var repWord = rae(words)
+			text = text.replace(repWord,rae(alienWords[race]))
+		}
+	}
+	return makeCap(text)
+}
+function getResponseToQuestion(race,subject){
+	var convoIndex = game.convoLog[race][subject]
+	//convoIndex=answers[race][subject].length-2
+	var response = convoIndex+'. '+translate(race,answers[race][subject][convoIndex])
+	addTextToComms('### RECIEVING:\n\n '+response,blue)
+	questionAsked = true
+	responseRecieved = true
+	buildCommsPopup()
+	convoIndex = convoIndex+1>answers[race][subject].length-1?0:convoIndex+1
+	game.convoLog[race][subject]=convoIndex
+}
 function handleFriendlyButtonClick(){
 	mood = 0
 	//ship.status = isCommunicating 
@@ -559,7 +672,7 @@ function handleObsequiousButtonClick(){
 function handleTerminateButtonClick(){
 	closePopup()
 	ship.isCommunicating=false
-	addTextToComms('Good bye')
+	addTextToComms('TRANSMITTING:\nFAREWELL. WE WILL MEET AGAIN.','grey')
 	buildShipUI()
 }
 function addTextToDialog(text){
@@ -568,11 +681,10 @@ function addTextToDialog(text){
 	}
 	dialogTextArray.push(text)
 }
-function addTextToComms(text){
-	if(commsTextArray.length>=9){	
-		commsTextArray.splice(0,1)
-	}
-	commsTextArray.push(text)
+function addTextToComms(text,color){	
+	commsTextArray=[]
+	commsTextArray.push(text+'@'+color)
+	commDelay = -1
 }
 
 
@@ -615,8 +727,9 @@ function disableButton(btn){
 function buildEncounterPopup(){
 	ship.enginesOn = false
 	showPopup({title:'encounter'})
-	var endEncounterButton = drawButton({label:'end encounter',width:120,onClick:handleEndEncounterButtonClick})
-		hailButton = drawButton({x:130,label:'hail',width:120,onClick:handleHailButtonClick})
+	var bw = buttonGroupWidth(780,10,2)
+	var endEncounterButton = drawButton({label:'end encounter',width:bw,onClick:handleEndEncounterButtonClick})
+		hailButton = drawButton({x:(bw+10)*1,label:'hail',width:bw,onClick:handleHailButtonClick})
 	popupButtons.addChild(endEncounterButton,hailButton)
 }
 function buildStarmapPopup(){
@@ -704,7 +817,7 @@ function buildUtilityScreen(){
 	utilityScreenContainer.addChild(utilityScreen)			
 }
 function buildDialogScreen(){
-	console.log('buildDialogScreen')
+	//console.log('buildDialogScreen')
 	dialogScreenContainer.removeAllChildren()
 	dialogScreenContainer.x= windowWidth-sideBarWidth//+2
 	dialogScreenContainer.y=utilityScreenHeight+10
@@ -1212,16 +1325,22 @@ function buildCommsPopup(){
 
 	commScreen.graphics.s(blue).ss(borderWidth).rr(0,40,780,480,borderRadius)
 	commDialogScreen.graphics.s(blue).ss(borderWidth).rr(0,530,780,200,borderRadius)
-	
+	// var commsTextLines = []
 	for (var i = 0; i < commsTextArray.length; i++) {
-		var text = commsTextArray[i]		
-		var commsText = new Text(text,'18px '+font,'white')
-		// console.log('commsText',commsText.getMetrics())
+		var text = commsTextArray[i].split('@')[0]
+		var color = commsTextArray[i].split('@')[1]
+		var commsText = new Text(text,'18px '+font,color)
 		commsText.x=5
 		commsText.y=5+(i*22)
 		commsText.lineWidth = 760
+		// console.log('commsText',commsText.getMetrics())
+
+		// commsTextLines.push.apply(commsTextLines,commsText.getMetrics().lines)
+
 		commDialogScreenContainer.addChild(commsText)
 	}
+		// console.log("commsTextLines", commsTextLines);
+
 	commDialogScreenContainer.x=10
 	commDialogScreenContainer.y=530
 	commAlienCommsContainer.x=10
@@ -1447,7 +1566,7 @@ function buildPersonelPopup(race){
 		learningRateLabel = returnText('LEARNING RATE:',raceInfoFontSize,blue),
 		
 		vitalityVal = returnText('100%',raceInfoFontSize,'white'),
-		raceVal = drawButton({x:0,y:0,label:race,width:80,onClick:handleRaceSelectClick,height:20}), //returnText(race,raceInfoFontSize,'white'),
+		raceVal = drawButton({x:0,y:0,label:race,width:100,onClick:handleRaceSelectClick,height:40}), //returnText(race,raceInfoFontSize,'white'),
 		durabilityVal = returnText(raceInfo.durability,raceInfoFontSize,'white'),
 		learningRateVal = returnText(raceInfo.learningRate,raceInfoFontSize,'white'),
 	
@@ -1543,7 +1662,7 @@ function buildPersonelPopup(race){
 	raceBodyContainer.scaleY = raceInfo.height*bgScale//raceInfo.height*bgScale
 	statsContainer.y=150 //x=250
 	infoContainer.y=300 //150
-
+	
 	skillsContainer.addChild(scienceLabel,navigationLabel,engineeringLabel,communicationsLabel,medicineLabel,scienceVal,navigationVal,engineeringVal,communicationsVal,medicineVal)
 	statsContainer.addChild(vitalityLabel,vitalityVal,raceLabel,durabilityLabel,learningRateLabel,raceVal,durabilityVal,learningRateVal)
 	infoContainer.addChild(typeLabel,heightLabel,weightLabel,typeVal,heightVal,weightVal)
@@ -2359,11 +2478,11 @@ function handleTick(event){
 	        //if(doCheck){
 			    
 			    if(tooHot&&doCheck){	
-	        		console.log('too hot')				    	
+	        		// console.log('too hot')				    	
 			    	//showPopup({title:'Too Close to Sun!',width:200,height:50})
 	        		doCheck=false
 			    }else{
-	        		console.log('not too hot')	
+	        		// console.log('not too hot')	
 			    	doCheck=!tooHot
 			    	//if(!tooHot)closePopup()
 			    }
@@ -2395,7 +2514,19 @@ function handleTick(event){
         }
         // once a second
         if(i==0){
+        	if(ship.isCommunicating){
+        		if(commDelay<0){
+        			commDelay = rifi(3,5)
+        		}else{
+        			commDelay--
+        		}
 
+        		if(commDelay==0 && subjectOfConversation!=null && subjectOfConversation!='' && responseRecieved==false){
+        			console.log("subjectOfConversation", subjectOfConversation);
+	        		var race = 'SPEMIN'
+					getResponseToQuestion(race,subjectOfConversation)
+				}
+        	}
         	if(ship.shieldsVal<100 && ship.shieldClass>0){
         		if(shipIsInHyperspace()) buildStatus()
         	}

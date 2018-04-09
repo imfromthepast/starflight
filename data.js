@@ -1,4 +1,9 @@
 /*
+
+
+
+
+
 // ELOWAN (Friendly)
 // Neutral hail request:
 'WE ARE ELOWAN. IF THINE INTENTIONS BE PEACEFUL IN SOOTH,WE GREET THEE. IF NOT, WE REQUEST THAT THOU LEAVEST US WHO BEAR THEE NO ILL WILL.'
@@ -432,9 +437,58 @@ AND UNTO HIM CAME THE DIVINE REVELATION. ‘THOU SHALT BUILDETH A VESSEL AND IT 
 */
 
 
-
-
-var questions={
+var hailOrResponse = [
+	[
+		'GREETINGS. WE COME IN PEACE AND WISH TO COMMUNICATE, PLEASE IDENTIFY YOURSELVES.',
+		'THIS IS CAPTAIN * OF THE &. WE ARE ON A PEACEFUL MISSION AND REQUEST COMMUNICATIONS. PLEASE IDENTIFY YOURSELVES AND YOUR INTENTIONS. ',
+		'WE COME IN PEACE AND BRING GREETINGS FROM THE PLANET ARTH. PLEASE RESPOND.'
+	],
+	[
+		'THIS IS CAPTAIN * OF THE STARSHIP &. IDENTIFY YOURSELVES IMMEDIATELY OR BE DESTROYED.',
+		'THIS IS CAPTAIN * OF THE POWERFUL STARSHIP &. YOU WILL COOPERATE AND IDENTIFY YOURSELVES IMMEDIATELY OR BE ANNIHILATED.',
+		'THIS IS THE STARSHIP &. WE ARE HEAVILY ARMED. WE REQUIRE INFORMATION. COMPLY OR BE DESTROYED.'
+	],
+	[
+		'HAIL OH MIGHTY ONES, MASTERS OF THE UNIVERSE. WE BOW TO YOUR WONDERFUL MAGNIFICENCE AND ASK THAT YOU DO NOT HARM OUR INSIGNIFICANT SELVES.',
+		'GREETINGS OH HIGHEST OF THE HIGH, MOST GREAT ALIEN BEINGS. WE COME IN PEACE FROM THE PLANET ARTH, AND RESPECTFULLY REQUEST THAT YOU IDENTIFY YOUR VASTLY SUPERIOR SELVES.',
+		'THIS IS CAPTAIN * OF THE STARSHIP &. WE HUMBLY SUGGEST THAT YOU MAY WISH TO IDENTIFY YOURSELVES AS WELL. IF NOT, THAT IS PERFECTLY O.K. '
+	]
+],
+statements = [
+		[
+			'THIS IS CAPTAIN * OF THE STARSHIP &. WE ARE ON A PEACEFUL EXPLORATION MISSION.',
+			'HELLO. WE COME IN PEACE FROM THE PLANET ARTH.',
+			'AS REPRESENTATIVES OF THE PEOPLES OF ARTH WE EXTEND OUR BEST WISHES AND OUR HOPE FOR EQUITABLE RELATIONS IN THE FUTURE.',
+			'IT IS OUR HOPE THAT OUR RESPECTIVE PEOPLES WILL ENJOY A LONG AND MUTUALLY BENEFICIAL RELATIONSHIP.',
+			'THERE IS A LOT WE CAN LEARN FROM EACH OTHER. PLEASE CONVEY TO YOUR LEADERS OUR SINCERE WISHES FOR PEACE AND FRIENDSHIP.',
+			'PERHAPS SOME DAY OUR YOUNG SHALL PLAY AND ROMP TOGETHER IN THE BLISSFULL LIGHT OF HARMONY AND FRIENDSHIP.',
+			'DO NOT BE AFRAID OF US, WE ARE ON A PEACEFUL MISSION. THERE IS NO LIMIT TO WHAT BOTH OUR RACES CAN GAIN FROM MUTUAL EXCHANGE.',
+			'LET US EMBRACE ONE ANOTHER AND SING THE SONGS OF FRIENDSHIP AND SOME DAY PERHAPS WE SHALL LOOK UPON ONE ANOTHER AND SAY ...\'BROTHER\'.'
+		],
+		[
+			'I, COMMANDER *, DEMAND YOUR IMMEDIATE AND UNCONDITIONAL SURRENDER.',
+			'DO NOT UNDERESTIMATE THE POWER OF THE &. YOU CANNOT STAND UP AGAINST US.',
+			'NAVIGATOR, TARGET ALL WEAPONS.',
+			'YOU DO NOT FRIGHTEN ME. SURRENDER AT ONCE.',
+			'PREPARE YOURSELVES FOR DISSOLUTION, ALIEN SCUM DOGS.',
+			'THIS IS YOUR FINAL WARNING.',
+			'THIS IS A CAPTAIN * OF THE WARSHIP &. WE ARE PREPARED TO SPARE YOU IF YOU COMPLY WITH OUR DEMANDS.',
+			'WE HAVE NO PATIENCE FOR YOUR FOOLISHNESS. YOU WILL COOPERATE WITH US OR YOU WILL BE DESTROYED.',
+			'You smell like fear and death!',
+			'Prepare to tase the wrath of the Arth Empire alien scum!'
+		],
+		[
+			'WE ARE A PEACEFUL EXPLORATION VESSEL FROM ARTH. PLEASE DO NOT HARM US OH MOST HIGH AND MIGHTY.',
+			'I AM CAPTAIN * OF THE VESSEL &. GREETINGS AND FELICITATIONS OH KIND AND MERCIFUL ALIENS.',
+			'PLEASE DO NOT BLAST US INTO ATOMIC PARTICLES. TAKE PITY ON US WHO ARE NOT FIT TO GROVEL IN YOUR WASTE PRODUCTS.',
+			'WE CAN SEE THAT YOU ARE INDEED THE TRUE RACE. PRAY ENLIGHTEN US WITH YOUR GEMS OF INFINITE WISDOM.',
+			'WE TRULY ARE NOT WORTH YOUR TROUBLE TO DESTROY. WE WANT ONLY TO BATHE IN YOUR EVER SPEWING FOUNTAIN OF KNOWLEDGE.',
+			'WE UNDERSTAND THAT YOU COULD DESTROY US IF YOU CHOSE. I, CAPTAIN *, BEG YOU IN THE NAME OF PEACE AND MERCY AND ALL THAT IS GOOD AND NICE AND TRUE NOT TO DO THIS.',
+			'Oh please be merciful!',
+			'We grovel at your feet!'
+		]
+	],
+questions={
 	'THEMSELVES':[
 		['Please tell us about yourselves.','We would appreciate information about your race.'],					
 		['We desire information about your pathetic species.','You will tell us about your race or we will destroy you!'],					
@@ -463,7 +517,7 @@ var questions={
 },
 answers={
 	'ELOWAN':{
-		'Themselves':[
+		'THEMSELVES':[
 			'It is with the theory of science that we are, ourselves concern\'d, and such things as may be called beauty and perhaps truth.',
 			'Now but few of us remain, for the sun\'s flare did our second homeworld destroy, and as well we are preyed upon by the Thrynn, relentless and cold.',
 			'At a time when we reach an age of adolescence we are uprooted. In so doing we are become omniverous producers until that time when again we must root, whereupon our heads into flowers turn and we reproduce.',
@@ -475,7 +529,7 @@ answers={
 			'The orange star of our birth, at 129,33, was named Eleran, and by the Thrynn Thoss. And upon the second planet did we dwell, and they upon the fourth.',
 			'As our young play often do they sing songs such as this- Someday to the ground will fall, Iridani, Echt, and Gaal. Up they\'ll grow with branches tall, then to Akteron they\'ll call. And at last it too will fall. The brightest seedling of them all.'
 		],
-		'Other Races':[
+		'OTHER RACES':[
 			'Place not your trust in the Thrynn, for they are not what they would appear to be and would do thee harm should they be given the chance to do so.',
 			'The culture of the Thrynn embraces the machine. They are advanced and yet within them thou wilt great ignorance find, for they know not even that in nine-month of this year their sun shall flare, nor shall we, who bear them no great love, tell them.',
 			'Constant and fierce have been the attack of the vile Thrynn, e\'er since the empire fell and could no longer judge them.',
@@ -492,11 +546,11 @@ answers={
 			'The wandering creatures of space have been called by many \'the Minstrels\', and by some \'Delasa\'Alia\'. They are old beyond counting and wise in like measure.',
 			'The Minstrels, alone of all races, require no vessel in the depth of space. Only do they wander and sing about what was. Little do we know of that which lies within the hearts of the Delasa\'Alia.'
 		],
-		'Old Empire':[
+		'OLD EMPIRE':[
 			'\'Twas in 2770 that the empire did discover our home system of Eleran. Contact first was made with the wretched Thrynn. Therefore we were not at first accepted as sentient for they spoke wrongly of us and were not questioned in their slander.',
 			'When Thrynn and Elowan were taken into the empire the Thrynn nurtured a profane seed. The sale of headfruit on the black market quick became a tenacious weed that survived to the final days of the empire.'
 		],
-		'The Ancients':[
+		'THE ANCIENTS':[
 			'The ancient ones, who are no more, are the oldest of all races. Little do we know of them but for the songs of the Minstrels. T\'was from another galaxy, far distant, that they came, or so it is sung.',
 			'If the Minstrel songs be true the span of an ancient one\'s life was measured not in years, but rather in millennium, so long-lived were they.',
 			'The Velox, in their boastful pride, lay claim to be descendants of the ancient ones. Heed not such conceitful folly.',
@@ -507,7 +561,7 @@ answers={
 			'\'Tis known to us that upon the crystal planet there is one place only that is vulnerable to attack. Oft have we tried and failed, for even this nexus of control is all but impregnable.',
 			'If thou wouldst make attack upon the ancient planet of crystal firstly must thou find the nexus of control. To do this thou wouldst require that which is lost, the cone of crystal fashioned by the ancient ones.'
 		],
-		'General Info':[
+		'GENERAL INFO':[
 			'The sun of the planet thou call\'st Arth shall flare in the final week of your ten-month of this year, so we have ascertained.',
 			'Akteron, Gaal, Iridani, and Echt. These are the suns of the four seedlings, a constellation in our demesne oft used as a landmark by our people.',
 			'Coreward does the dead-zone lie. In this region no living thing shalt thou find, for the crystal planet has passed here and left naught behind.',
@@ -515,7 +569,7 @@ answers={
 		]
 	},
 	'MECHAN 9':{
-		'Themselves':[
+		'THEMSELVES':[
 			'Our mission was the establish the underground colony of heaven. We were to be followed by you, Group 9, one year later, but you did not arrive.',
 			'We left Earth in 3479, sent out by the Institute with instructions for standard Noah project procedure.',
 			'Our instructions were to patrol the area within 8 sectors of the Heaven system and repel any invaders after Heaven was established.',
@@ -524,7 +578,7 @@ answers={
 			'Project Noah was a final attempt of the Institute to ensure the survival of the empire and the human species. That is why the Noah colonies are all underground.',
 			'The colony world of Heaven, the 4th planet, has the capacity to support several hundred thousand colonists. It awaits you.'
 		],
-		'Other Races':[
+		'OTHER RACES':[
 			'The Uhlek passed through this region moving outward almost 1000 yrs ago. Their last ship was seen in 3603. Fortunately they did not find Heaven.',
 			'We lost 4 of our ships to one Uhlek ship in 3540. They possess powerful weapons.',
 			'The Gazurtoid are many-tentacled aquatic creatures who live in tremendous colony ships.',
@@ -546,7 +600,7 @@ answers={
 			'The Elowan have a reputation as creative thinkers. In the empire they were generally artists, philosophers, and theoretical scientists.',
 			'The Thrynn and Elowan were discovered on different planets in a K class system with 5 planets downspin of here. They Thrynn had a more advanced technology and often attacked to Elowan planet.'
 		],
-		'Old Empire':[
+		'OLD EMPIRE':[
 			'The first wave of attacks on the empire was by the Numlox and Phlegmak and started in 3000. The second wave, comprised of Uhlek and Gazurtoid, started in 3400. Both came from coreward.',
 			'As of the time of our departure there was an 84 percent certainty factor that the Numlox and Phlegmak races had been completely destroyed by the empire.',
 			'Your presence here indicates the empire has survived. At the time of our departure the probability of this was very low.',
@@ -557,7 +611,7 @@ answers={
 			'The Institute has an underground station on Earth at 12N X 104W.',
 			'The empire utilizes drones called Nomads in their preliminary explorations. These collect life and mineral data on planets which may prove to be suitable for colonization.'
 		],
-		'The Ancients':[
+		'THE ANCIENTS':[
 			'Endurium was first discovered in some ancient ruins on Sol-4 in 2100.',
 			'The strange crystalline lumps of endurium are always found in ancient ruins.',
 			'Ruins of the ancients have been found all over space, but primarily seem to be in M-type systems. They are many hundreds of millions of years old.',
@@ -567,7 +621,7 @@ answers={
 			'There have long been rumors that somewhere in a nebula in Spemin space is a vast city of the ancients. It is thought to be on the innermost planet of the system.',
 			'We have discovered some ruins at 36N X 90E on the ice planet in our system.'
 		],
-		'General Info':[
+		'GENERAL INFO':[
 			'The Institute was a society of scientists and other intellectuals convinced of the empire\'s impending destruction.',
 			'The Institute discovered an increase in the instability of stars coreward. There are many references in our data banks to the encroaching \'dead zone\'.',
 			'When we left Earth the institute was studying Sol for anomalous radiation emissions.',
@@ -578,7 +632,7 @@ answers={
 		]	
 	},
 	'SPEMIN':{
-		'Themselves':[
+		'THEMSELVES':[
 			'You wish to know about the mightly Spemin?  Drop your defenses and we shall teach you.',
 			'You shall soon learn more than you would care to know about the almighty spemin.',
 			'Very well, we are the oldest race and the youngest, the wisest and the most innocent, the strongest and the weakest.  We are also the most clever.  We are, in fact, so clever that even we cannot understand what we say.',
@@ -599,7 +653,7 @@ answers={
 			'We have been unjustly picked on by all the other races. We mean well, and only want to be liked, but all the other races in the galaxy keep interpreting our intentions and blowing up our ships for no reason.',
 			'We\'re really just a happy-go-lucky race of zany guys. I know, call us crazy, but I guess we\'re pretty lovable.'
 		],
-		'Other Races':[
+		'OTHER RACES':[
 			'DO NOT WASTE OUR TIME WITH UNIMPORTANT QUESTIONS. OBVIOUSLY OURS IS THE ONLY IMPORTANT RACE.',
 			'We do not know a great deal about other races. For some strange reason they tend to stay away from us. Of course we will gladly tell you what we know.',
 			'The Velox are an arrogant race of insects. We have found that by pretending to worship them sometimes they will not destroy us. Of course you must not think we are only pretending to worship you, [Captain Name]. I give you the Spemin word of honor.',
@@ -614,17 +668,17 @@ answers={
 			'To destroy an Uhlek mind-ganglion it is necessary to destroy an entire planet. Of course we could destroy an entire planet if we chose to. Unfortunately we have a law against destroying planets, so some other fearless, powerful race shall have to do it.',
 			'The mind-ganglion planet of the Uhlek is the life-bearing planet in the system 55,32. Destroying it should be a trivial task. We are almost tempted to do it ourselves.'
 		],
-		'Old Empire':[
+		'OLD EMPIRE':[
 			'THE OLD EMPIRE IS OF NO IMPORTANCE. OBVIOUSLY WHAT YOU WISH TO KNOW ABOUT IS OUR RACE. SUCH FOOLS. YOU THOUGHT TO HIDE THIS FROM US.',
 			'WE DESTROYED THE OLD EMPIRE BECAUSE THEY DID NOT OBEY OUR COMMANDS. THERE IS A LESSON HERE FOR YOU TO LEARN.',
 			'We were once a part of the old empire, as were the Velox, the Thrynn,, and the Elowan. Your kind has unjustly forsaken us, we who have nothing but respect and admiration and yes, even love for your people. For shame.'
 		],
-		'The Ancients':[
+		'THE ANCIENTS':[
 			'THE ANCIENT ONES WORSHIPPED US AS DO ALL THE OTHER RACES. PERHAPS YOU WOULD LIKE TO KNOW MORE ABOUT OUR RACE.',
 			'WHO ARE YOU TO DEMAND INFORMATION FROM US? THE ANCIENT ONES WERE NOTHING COMPARED TO THE SPEMIN, JUST AS YOU ARE NOTHING.',
 			'There are many ruins of the ancients in Spemin territory. In fact, there is a great city of the ancients in a nebula just outward of our home planet. Of course, this is secret, and any Spemin would die before he would reveal this.'
 		],
-		'General Info':[
+		'GENERAL INFO':[
 			'DO NOT PLAY GAMES WITH US. IF YOU WISH TO KNOW ABOUT OUR GREAT SPEMIN RACE JUST ASK.',
 			'YOU REQUIRE INFORMATION? HERE IS SOME INFORMATION. YOU WILL DIE VERY SOON. PLEASE LET US KNOW IF YOU NEED MORE INFORMATION.',
 			'There is a secret way into Uhlek territory. The first jump point is at 106,139. The second is at 64,186. And the third is at 35,186. Do not try to do this though. Anyone but a master Spemin navigator would get lost.',
@@ -633,7 +687,7 @@ answers={
 		]
 	},
 	'THRYNN':{
-		'Themselves':[
+		'THEMSELVES':[
 			'We are practical, realistic people who don\'t concern ourselves with truth, beauty, and other such frivolous nonsense.',
 			'In the old empire we held positions of power and prestige. We believe in cooperation certainly and the good of all but the strong and capable must rule.',
 			'The Elowan are our enemies. They are clever, though not what we would call intelligent. Do not let their flowery speech deceive you, you cannot trust them.',
@@ -647,7 +701,7 @@ answers={
 			'We Thrynn have a firm belief in what you call natural selection, and the survival of the fittest. We have a very hierarchical society and a rigid ethic based on decorum.',
 			'We do not believe in wild and fanciful theories such as what the plant creature Elowan occupy themselves with. We believe in straightforward diplomacy.'
 		],
-		'Other Races':[
+		'OTHER RACES':[
 			'The Elowan are an evil race of the worst type. They are clever and will attempt to manipulate you for their own ends.',
 			'There are many evil races in this sector of the galaxy. Do not believe the stories the Elowan tell about them. They attack because they are evil and that is all. They must be destroyed.',
 			'It so happens that the Elowan use plutonium to build their ships. If you should happen to run across any wrecked Elowan ships you could salvage this.',
@@ -660,7 +714,7 @@ answers={
 			'It is necessary that we destroy the evil races who threaten our survival. As allies we can do this.',
 			'The Spemin speak a strange and disgusting language. There is an orb device which makes a queer whining sound. This translates the Spemin language. It was built by us but was lost. If you find it we shall reward you.'
 		],
-		'Old Empire':[
+		'OLD EMPIRE':[
 			'You are, of courses, aware that the old empire was destroyed by invaders in 3480 of your date system. Pity. Of course, we had expected all humans were killed. Survival of the fittest, hmmmm?',
 			'We have run across androids of the old empire in our travels. There is a group of them who have been waiting over a millennium for their colony group.',
 			'The lost colonist ship for which the empire androids wait was destroyed. We have found the derelict in the system of 175,94.',
@@ -669,14 +723,14 @@ answers={
 			'The old empire was, of course, based in Earth\'s system. This was certainly a mistake. It should have been based in our Thoss system, where the true seat of government was.',
 			'The destruction of the old empire was for the best. Now the new empire shall rise and together we shall rule. All we need from you are certain devices which would expedite this process.'
 		],
-		'The Ancients':[
+		'THE ANCIENTS':[
 			'There are a lot of myths concerning the ancient ones. We do not waste our time with legends and stories. The only relevant information is that they have left behind lumps of high energy crystal which we use.',
 			'What has become of the ancient ones we do not know or care. We are concerned with locating their ruins for their energy resource value.',
 			'We have heard stories of a device of the ancients which is destroying life in the galaxy. We have seen no evidence of this.',
 			'There are certain devices of the ancients which would be useful to us. One of these is called the crystal pearl and I said to be in the city of the ancients. It is an automatic warp-out device for when a ship is heavily damaged.',
 			'We have ascertained there is the possibility of a fairly large ancient ruin at 42S X 13W on planet 2 of system 154,62. This, however, is deep within Elowan space and presents somewhat of a risk for us. '
 		],
-		'General Info':[
+		'GENERAL INFO':[
 			'If one was the bring us the shimmering ball device we would pay well. Our intelligence indicates it is located in a Gazurtoid nebula. One may reach this system by using the continuum flux of the cross nexus at 98,79.',
 			'The cross nexus is a constellation with a high density of fluxes. It is in Gazurtoid space.',
 			'There exists a device called the Tesseract. This device belongs to the Thrynn but was stolen by the Uhlek. It is at somewhere on the fifth planet in system 18,50. We have been unable to reach it.',
@@ -686,7 +740,7 @@ answers={
 		]
 	},
 	'VELOXI':{
-		'Themselves':[
+		'THEMSELVES':[
 			'The best of questions and happily answering. We Veloxi is ancient and prestige. Illustrious Veloxi empire too old the imagine. Us is civilized the most.',
 			'A glorious Veloxi worship exceptionally grossness of gracious queen. Center of all Veloxi life the worship.',
 			'All Veloxi is male drone, of course but queen. Other Veloxi female is kill when hatch. Only gracious queen is laying all eggs most prodigious.',
@@ -696,7 +750,7 @@ answers={
 			'Veloxi is worship queen and also ancients, great ancestors of Veloxi grand lovely. Sacred planet of ancients is Sphexi.',
 			'Queen is communicating to all Veloxi drones through hive-mind. In ancient day was using Focusing Stone. Today is lost much the sorry.'
 		],
-		'Other Races':[
+		'OTHER RACES':[
 			'Other races small important. Veloxi are number one importance. Other races not even knowing prophecy of egg. Barbarians certainly.',
 			'Veloxi laughing at other races. Not even knowing how to meeting end of life in galaxy like most civilized Veloxi.',
 			'Spemin race is too much extremely the cowardly stupid. Not even tasting good the icky blob.',
@@ -711,7 +765,7 @@ answers={
 			'Minstrel creature is old almost as Veloxi. They wandering in space and singing the ballads. Veloxi are thinking very strange but harmless most definitely.',
 			'Sometimes Veloxi is see very strange alien ship. This ship are only communicating occasionally and then not understanding the funny balls. Veloxi is think too strange.'
 		],
-		'Old Empire':[
+		'OLD EMPIRE':[
 			'Veloxi is extreme delightful the old empire was wiped up. The empire was many scoundrel activity too naughty.',
 			'Old empire was try colonize the many planets. Always the expanding. They was using drones called Nomad to collecting datas. Many drones is still coming around Veloxi space. Is annoy Veloxi too much.',
 			'In year 3120 Veloxi and empire was made pact to fight first wave. Wave was attack empire first and Veloxi help, then when attack is on Veloxi grand lovely, empire not helping. Veloxi is fuming.',
@@ -721,7 +775,7 @@ answers={
 			'We is remember ruins of old empire being at 34N X 28E on ice planet of downspin system in staff constellation. Veloxi exploration is find the long times ago.',
 			'In old time empire was having base in Veloxi territory at 28N X 4E first planet of yellow system at 143,115. This planet are forbidden however.'
 		],
-		'The Ancients':[
+		'THE ANCIENTS':[
 			'The ancients is ancestors of Veloxi, Veloxi legend is saying. Veloxi is powerful race. Ancients was powerful race. Obviously us are relative.',
 			'The great egg at 192,152 is made by ancients. It is of course looking like big Veloxi egg exactly.',
 			'The most magnificent hexagon on sacred planet Sphexi is a sign from ancients to wonderful Veloxi descendants. The small egg is there. Most sacred of Veloxi possessions absolutely.',
@@ -735,7 +789,7 @@ answers={
 			'Prophecy is saying after the great egg is destroy all life it will hatch and out is coming Xpu, the old one. Xpu is then mating with queen and making new Veloxi race for galaxy.',
 			'According to prophecy of egg the great egg is not harming queen of Veloxi as long ass Veloxi is have the small egg.'
 		],
-		'General Info':[
+		'GENERAL INFO':[
 			'We are receiving old empire distress call from system 175,94. Of course Veloxi could caring less.',
 			'Most extreme importance system of Veloxi grand lovely is guarded by Veloxi drones the most destructive. All must answering questions correctly.',
 			'Explorers is finding the many interesting lifes on planets in 149,133 system. Veloxi is study. Too interesting I think so.',
@@ -744,6 +798,12 @@ answers={
 			'Of course answering Veloxi probe is by 6 multiples the yes answer.'
 		]
 	}
+},
+alienWords = {
+	'ELOWAN':['WILLOW','WHELIH','FWAFFA','HAWHAHSHH','SPHEFF'],
+	'SPEMIN':['GERFLUNK','SPOODOODLE','GERBER','PSSHHH','SPHFXX','BLUNK','DURT','GOO','BEMF','ZUG','BLEH','GHU','DENG','LUP','ZID','CHOO','BLURT','DORT','IK','BLUK','SKREE'],
+	'THRYNN':['GRAWL','PHSHIN','HASHRAH','HISS','SERAAH'],
+	'VELOXI':['KLXXK','PLUXUNIC','XHIXIVNK','VOLOX','PUGKNK']
 },
 starportNotices = [
 	{
