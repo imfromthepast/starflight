@@ -1929,12 +1929,56 @@ function drawAndroidBody(){
 }
 function drawSpeminCommScreen(){
 	var bodyCont = new Container(),
-		body = new Shape()
+		body = new Shape(),
+		xoff = 0,yoff = -30
 
-	body.graphics
+    var eye1 = drawSpeminEyeStalk(-80,-160,'blue')
+    
+    xoff = 0
+    yoff = -30
+	body.graphics 
+		.s(black).ss(3)
+        .f('blue').dc(530,360,30).f('white').dc(535,360,20).f('black').dc(535,360,5)   
 		.f('blue')
-		.de(50,150,300,280)
-	return body
+		// .de(50,150,300,280)
+		// .de(300,250,180,180)
+		.mt(79 + xoff, 443 + yoff)
+        .bt(31 + xoff, 425 + yoff, 67 + xoff, 421 + yoff, 71 + xoff, 362 + yoff)
+        .bt(82 + xoff, 216 + yoff, 171 + xoff, 161 + yoff, 230 + xoff, 158 + yoff)
+        .bt(278 + xoff, 156 + yoff, 328 + xoff, 185 + yoff, 347 + xoff, 213 + yoff)
+        .bt(373 + xoff, 251 + yoff, 374 + xoff, 299 + yoff, 378 + xoff, 298 + yoff)
+        .bt(451 + xoff, 280 + yoff, 484 + xoff, 301 + yoff, 495 + xoff, 311 + yoff)
+        .bt(517 + xoff, 331 + yoff, 522 + xoff, 382 + yoff, 525 + xoff, 414 + yoff)
+        .bt(526 + xoff, 429 + yoff, 554 + xoff, 445 + yoff, 513 + xoff, 464 + yoff)
+        .bt(499 + xoff, 470 + yoff, 472 + xoff, 482 + yoff, 404 + xoff, 483 + yoff)
+        .bt(344 + xoff, 484 + yoff, 133 + xoff, 463 + yoff, 80 + xoff, 444 + yoff)
+        .cp()
+        .ef()  
+        .f('blue').dc(230,325,30).f('white').dc(230,320,20).f('black').dc(230,320,5)   
+    var eye2 = drawSpeminEyeStalk(0,-50,'blue')   
+    var eye3 = drawSpeminEyeStalk(-150,350,'blue')
+    eye3.regX = 383+120
+    eye3.regY = 370+250
+    eye3.rotation = 270
+	bodyCont.addChild(eye1,body,eye2,eye3)
+	return bodyCont
+}
+function drawSpeminEyeStalk(xoff,yoff,fc){
+    var shape = new Shape()
+    // shape.regX = 383 + xoff
+    // shape.regY = 370 + yoff
+    shape.graphics
+    	.f(fc).s('black').ss(3)
+        .mt(383 + xoff, 370 + yoff)
+        .bt(374 + xoff, 382 + yoff, 403 + xoff, 362 + yoff, 401 + xoff, 347 + yoff)
+        .bt(399 + xoff, 332 + yoff, 394 + xoff, 330 + yoff, 397 + xoff, 314 + yoff)
+        .bt(400 + xoff, 299 + yoff, 417 + xoff, 294 + yoff, 432 + xoff, 297 + yoff)
+        .bt(463 + xoff, 303 + yoff, 462 + xoff, 327 + yoff, 456 + xoff, 339 + yoff)
+        .bt(450 + xoff, 352 + yoff, 435 + xoff, 357 + yoff, 420 + xoff, 355 + yoff)
+        .bt(413 + xoff, 354 + yoff, 407 + xoff, 371 + yoff, 399 + xoff, 390 + yoff)
+        .ef()
+        .f('white').dc(430 + xoff,320 + yoff,20).f('black').dc(430 + xoff,320 + yoff,5)
+    return shape
 }
 function blendedColor(color1, color2, ratio) {
 	var rgba1 = rgbaComponents(color1)

@@ -25,8 +25,120 @@ var debug = false,
 		nebulas     : nebulaData,
 		fluxes      : fluxData,
 		fluxLog		: [],
-		money       : 2000,
+		money       : 12000,
 		date  		: {minute:0,hour:0,day:1,month:1,year:4620},
+		personnel    : [
+							{
+								name:'Dirk Diggly',
+								vitality:100,
+								number:0,
+								race:'HUMAN',
+								science:personnelRaces['HUMAN'].science.min,
+								navigation:personnelRaces['HUMAN'].navigation.min,
+								engineering:personnelRaces['HUMAN'].engineering.min,
+								communications:personnelRaces['HUMAN'].communications.min,
+								medical:personnelRaces['HUMAN'].medical.min,
+							},	
+							{
+								name:'Joe Blow',
+								vitality:100,
+								number:1,
+								race:'HUMAN',
+								science:personnelRaces['HUMAN'].science.min,
+								navigation:personnelRaces['HUMAN'].navigation.min,
+								engineering:personnelRaces['HUMAN'].engineering.min,
+								communications:personnelRaces['HUMAN'].communications.min,
+								medical:personnelRaces['HUMAN'].medical.min,
+							},		
+							{
+								name:'Noloxi',
+								vitality:100,
+								number:2,
+								race:'VELOX',
+								science:personnelRaces['VELOX'].science.min,
+								navigation:personnelRaces['VELOX'].navigation.min,
+								engineering:personnelRaces['VELOX'].engineering.min,
+								communications:personnelRaces['VELOX'].communications.min,
+								medical:personnelRaces['VELOX'].medical.min,
+							},		
+							{
+								name:'Epixil',
+								vitality:100,
+								number:3,
+								race:'VELOX',
+								science:personnelRaces['VELOX'].science.min,
+								navigation:personnelRaces['VELOX'].navigation.min,
+								engineering:personnelRaces['VELOX'].engineering.min,
+								communications:personnelRaces['VELOX'].communications.min,
+								medical:personnelRaces['VELOX'].medical.min,
+							},		
+							{
+								name:'Hyphissh',
+								vitality:100,
+								number:4,
+								race:'THRYNN',
+								science:personnelRaces['THRYNN'].science.min,
+								navigation:personnelRaces['THRYNN'].navigation.min,
+								engineering:personnelRaces['THRYNN'].engineering.min,
+								communications:personnelRaces['THRYNN'].communications.min,
+								medical:personnelRaces['THRYNN'].medical.min,
+							},		
+							{
+								name:'Manilowa',
+								vitality:100,
+								number:5,
+								race:'ELOWAN',
+								science:personnelRaces['ELOWAN'].science.min,
+								navigation:personnelRaces['ELOWAN'].navigation.min,
+								engineering:personnelRaces['ELOWAN'].engineering.min,
+								communications:personnelRaces['ELOWAN'].communications.min,
+								medical:personnelRaces['ELOWAN'].medical.min,
+							},		
+							{
+								name:'Coloqui',
+								vitality:100,
+								number:6,
+								race:'ELOWAN',
+								science:personnelRaces['ELOWAN'].science.min,
+								navigation:personnelRaces['ELOWAN'].navigation.min,
+								engineering:personnelRaces['ELOWAN'].engineering.min,
+								communications:personnelRaces['ELOWAN'].communications.min,
+								medical:personnelRaces['ELOWAN'].medical.min,
+							},		
+							{
+								name:'NV-129',
+								vitality:100,
+								number:7,
+								race:'ANDROID',
+								science:personnelRaces['ANDROID'].science.min,
+								navigation:personnelRaces['ANDROID'].navigation.min,
+								engineering:personnelRaces['ANDROID'].engineering.min,
+								communications:personnelRaces['ANDROID'].communications.min,
+								medical:personnelRaces['ANDROID'].medical.min,
+							},		
+							{
+								name:'EN-332',
+								vitality:100,
+								number:8,
+								race:'ANDROID',
+								science:personnelRaces['ANDROID'].science.min,
+								navigation:personnelRaces['ANDROID'].navigation.min,
+								engineering:personnelRaces['ANDROID'].engineering.min,
+								communications:personnelRaces['ANDROID'].communications.min,
+								medical:personnelRaces['ANDROID'].medical.min,
+							},		
+							{
+								name:'SC-436',
+								vitality:100,
+								number:9,
+								race:'ANDROID',
+								science:personnelRaces['ANDROID'].science.min,
+								navigation:personnelRaces['ANDROID'].navigation.min,
+								engineering:personnelRaces['ANDROID'].engineering.min,
+								communications:personnelRaces['ANDROID'].communications.min,
+								medical:personnelRaces['ANDROID'].medical.min,
+							}
+						],
 		questions   : ['THEMSELVES','OTHER RACES','THE ANCIENTS','OLD EMPIRE','GENERAL INFO'],
 		convoLog	: {
 							'ELOWAN':{
@@ -84,8 +196,120 @@ var debug = false,
 		nebulas     : nebulaData2,
 		fluxes      : fluxData2,
 		fluxLog		: [],
-		money       : 2000,
+		money       : 12000,
 		date  		: {minute:0,hour:0,day:1,month:1,year:4620},
+		personnel    : [
+							{
+								name:'Dirk Diggly',
+								vitality:100,
+								number:0,
+								race:'HUMAN',
+								science:personnelRaces['HUMAN'].science.min,
+								navigation:personnelRaces['HUMAN'].navigation.min,
+								engineering:personnelRaces['HUMAN'].engineering.min,
+								communications:personnelRaces['HUMAN'].communications.min,
+								medical:personnelRaces['HUMAN'].medical.min,
+							},	
+							{
+								name:'Joe Blow',
+								vitality:100,
+								number:1,
+								race:'HUMAN',
+								science:personnelRaces['HUMAN'].science.min,
+								navigation:personnelRaces['HUMAN'].navigation.min,
+								engineering:personnelRaces['HUMAN'].engineering.min,
+								communications:personnelRaces['HUMAN'].communications.min,
+								medical:personnelRaces['HUMAN'].medical.min,
+							},		
+							{
+								name:'Noloxi',
+								vitality:100,
+								number:2,
+								race:'VELOX',
+								science:personnelRaces['VELOX'].science.min,
+								navigation:personnelRaces['VELOX'].navigation.min,
+								engineering:personnelRaces['VELOX'].engineering.min,
+								communications:personnelRaces['VELOX'].communications.min,
+								medical:personnelRaces['VELOX'].medical.min,
+							},		
+							{
+								name:'Epixil',
+								vitality:100,
+								number:3,
+								race:'VELOX',
+								science:personnelRaces['VELOX'].science.min,
+								navigation:personnelRaces['VELOX'].navigation.min,
+								engineering:personnelRaces['VELOX'].engineering.min,
+								communications:personnelRaces['VELOX'].communications.min,
+								medical:personnelRaces['VELOX'].medical.min,
+							},		
+							{
+								name:'Hyphissh',
+								vitality:100,
+								number:4,
+								race:'THRYNN',
+								science:personnelRaces['THRYNN'].science.min,
+								navigation:personnelRaces['THRYNN'].navigation.min,
+								engineering:personnelRaces['THRYNN'].engineering.min,
+								communications:personnelRaces['THRYNN'].communications.min,
+								medical:personnelRaces['THRYNN'].medical.min,
+							},		
+							{
+								name:'Manilowa',
+								vitality:100,
+								number:5,
+								race:'ELOWAN',
+								science:personnelRaces['ELOWAN'].science.min,
+								navigation:personnelRaces['ELOWAN'].navigation.min,
+								engineering:personnelRaces['ELOWAN'].engineering.min,
+								communications:personnelRaces['ELOWAN'].communications.min,
+								medical:personnelRaces['ELOWAN'].medical.min,
+							},		
+							{
+								name:'Coloqui',
+								vitality:100,
+								number:6,
+								race:'ELOWAN',
+								science:personnelRaces['ELOWAN'].science.min,
+								navigation:personnelRaces['ELOWAN'].navigation.min,
+								engineering:personnelRaces['ELOWAN'].engineering.min,
+								communications:personnelRaces['ELOWAN'].communications.min,
+								medical:personnelRaces['ELOWAN'].medical.min,
+							},		
+							{
+								name:'NV-129',
+								vitality:100,
+								number:7,
+								race:'ANDROID',
+								science:personnelRaces['ANDROID'].science.min,
+								navigation:personnelRaces['ANDROID'].navigation.min,
+								engineering:personnelRaces['ANDROID'].engineering.min,
+								communications:personnelRaces['ANDROID'].communications.min,
+								medical:personnelRaces['ANDROID'].medical.min,
+							},		
+							{
+								name:'EN-332',
+								vitality:100,
+								number:8,
+								race:'ANDROID',
+								science:personnelRaces['ANDROID'].science.min,
+								navigation:personnelRaces['ANDROID'].navigation.min,
+								engineering:personnelRaces['ANDROID'].engineering.min,
+								communications:personnelRaces['ANDROID'].communications.min,
+								medical:personnelRaces['ANDROID'].medical.min,
+							},		
+							{
+								name:'SC-436',
+								vitality:100,
+								number:9,
+								race:'ANDROID',
+								science:personnelRaces['ANDROID'].science.min,
+								navigation:personnelRaces['ANDROID'].navigation.min,
+								engineering:personnelRaces['ANDROID'].engineering.min,
+								communications:personnelRaces['ANDROID'].communications.min,
+								medical:personnelRaces['ANDROID'].medical.min,
+							}
+						],
 		questions   : ['THEMSELVES','OTHER RACES','THE PAST','TRADE','GENERAL INFO'],
 		convoLog	: {
 							'ELOWAN':{
@@ -185,6 +409,7 @@ var debug = false,
 	dialogScreenWidth        = sideBarWidth-5,
 	dialogScreenHeight       = 100,
 	cargoPodStorageCapacity  = 100,
+	trainingCost 			 = 300,
 	isDocked                 = 0,
 	isOnPlanet               = 1,
 	isInOrbit                = 2,
@@ -196,7 +421,7 @@ var debug = false,
  	shipClass = {
  		standard : {engineClassMax:5,shieldClassMax:5,armorClassMax:5,laserClassMax:5,missileClassMax:5,plasmaClassMax:0,cargoPodsMax:10,jumpPodsMax:0,blastoPodsMax:0},
  		expanded : {engineClassMax:5,shieldClassMax:5,armorClassMax:5,laserClassMax:5,missileClassMax:5,plasmaClassMax:1,cargoPodsMax:10,jumpPodsMax:2,blastoPodsMax:4}
- 	},
+ 	}, 	
  	shipOptions = {
  		class               : shipClass.standard,
  		status              : debug?isInSystem:isDocked,
@@ -222,12 +447,14 @@ var debug = false,
  		hpMax               : 100,
  		isInEncounter       : false,
  		isCommunicating 	: false,
- 		captain				: {},
- 		scienceOfficer 		: {},
- 		navigator 			: {},
- 		engineer 			: {},
- 		commsOfficer 		: {},
- 		doctor 				: {}
+ 		crew 				: {
+ 									'CAPTAIN':{},
+ 									'SCIENCE OFFICER':{},
+ 									'NAVIGATOR':{},
+ 									'ENGINEER':{},
+ 									'COMMS OFFICER':{},
+ 									'DOCTOR':{}
+ 								}
  	},
  	ship = shipOptions,
  	isInNebula = false,
@@ -297,7 +524,7 @@ var debug = false,
 	optionsButton = drawButton({y:50*5,label:'settings',width:295,onClick:handleOptionsButtonClick}),
 	dialogTextArray = [],
 	commsTextArray = [],
-	raceNames = Object.keys(personelRaces),
+	raceNames = Object.keys(personnelRaces),
 	subjectOfConversation = '',
 	questionAsked = false,
 	responseRecieved = false,
@@ -338,7 +565,7 @@ function handleShipConfigButtonClick(event){
 	buildShipConfigPopup(null)
 }
 function handleCrewButtonClick(event){
-	buildPersonelPopup('HUMAN')
+	buildPersonnelPopup('HUMAN')
 }
 function handleTradeDepotButtonClick(event){
 	buildTradeDepotPopup()
@@ -417,7 +644,7 @@ function round(value, precision) {
     return Math.round(value * multiplier) / multiplier
 }
 function burnFuel(amount){
-	decreaseFuel(amount/ship.engineClass)
+	decreaseFuel(amount)///ship.engineClass)
 }
 function decreaseFuel(amount){
 	decreaseCargoItemMass(ship.fuelType,amount)
@@ -554,14 +781,10 @@ function init(){
 		    ship=gameSave.ship
 			showSplashScreen = false
 			if(game.convoLog == null) game.convoLog = sf1Options.convoLog
-			
- 			if(ship.captain	== null) ship.captain =  {race:'HUMAN',name:'Kirk',science:100,navigation:100,engineering:100,comms:100,medical:100,vitality:100}
- 			if(ship.scienceOfficer == null) ship.scienceOfficer	= {race:'HUMAN',name:'Spock',science:250,navigation:100,engineering:100,comms:50,medical:50,vitality:100}
- 			if(ship.navigator == null) ship.navigator =  {race:'VELOX',name:'NAXLUM',science:50,navigation:100,engineering:100,comms:50,medical:50,vitality:100}
- 			if(ship.engineer == null) ship.engineer =  {race:'VELOX',name:'Egoplox',science:50,navigation:100,engineering:150,comms:50,medical:50,vitality:100}
- 			if(ship.commsOfficer == null) ship.commsOfficer	= {race:'ELOWAN',name:'Uhura',science:20,navigation:20,engineering:50,comms:250,medical:50,vitality:100}
- 			if(ship.doctor 	== null) ship.doctor =  {race:'ELOWAN',name:'Bones',science:50,navigation:20,engineering:30,comms:50,medical:150,vitality:100}
-			
+			if(game.personnel == null) game.personnel = sf1Options.personnel
+			//ship.crew=[]
+			// game = sf1Options
+			// ship = shipOptions
 			doSaveGame=true
 			if(shipIsDocked()){
 				closePopup()
@@ -587,6 +810,7 @@ function init(){
 	} else {
 	    console.log("Sorry, your browser does not support Web Storage...");
 	}
+	console.log("ship.crew", ship.crew);
 }
 function planetIsStarport(){ 
 	return currentPlanetType==58
@@ -628,7 +852,7 @@ function handleAskQuestionButtonClick(event){
 function translate(race,text){
 	var words = text.split(' ')
 	console.log("words", words);
-	var commsOfficerSkillLevel = ship.commsOfficer.comms
+	var commsOfficerSkillLevel = ship.crew['COMMS OFFICER'].communications
 	console.log("commsOfficerSkillLevel", commsOfficerSkillLevel);
 	var untranslatedWords = 100 - (100*(commsOfficerSkillLevel/200))
 	console.log("untranslatedWords", untranslatedWords);
@@ -1095,7 +1319,7 @@ function handleRaceSelectClick(event){
 	var currentRace = event.currentTarget.name,
 		currentRaceIndex = raceNames.indexOf(currentRace),
 		nextRaceIndex = currentRaceIndex==raceNames.length-1?0:currentRaceIndex+1
-	buildPersonelPopup(raceNames[nextRaceIndex])
+	buildPersonnelPopup(raceNames[nextRaceIndex])
 }
 
 var starField = new Container()		
@@ -1553,120 +1777,218 @@ function handleSelectClick(event){
 	var part = event.currentTarget.name
 	buildShipConfigPopup(part)
 }
-function buildPersonelPopup(race){
+var currentCrewman = {}
+function buildPersonnelPopup(crewNumber){
 	showPopup({title:'CREW',height:800})
 	popupButtons.addChild(starPortButtons)
 	buildStatus()
-	var raceInfo = personelRaces[race],
-		raceInfoFontSize = 16,
+	var moneyVal = returnText('YOUR ACCOUNT BALANCE IS: '+game.money+' MU',16,'white')
+	currentCrewman = game.personnel[crewNumber]
+	if(currentCrewman == null){
+		var captainPositionLabel = returnText('CAPTAIN',18,blue),
+			sciencePositionLabel = returnText('SCIENCE OFFICER',18,blue),
+			navigatorPositionLabel = returnText('NAVIGATOR',18,blue),
+			engineerPositionLabel = returnText('ENGINEER',18,blue),
+			commsPositionLabel = returnText('COMMS OFFICER',18,blue),
+			doctorPositionLabel = returnText('DOCTOR',18,blue),
+		    captainPositionVal = returnText('AVAILABLE',18,blue),
+			sciencePositionVal = returnText('AVAILABLE',18,blue),
+			navigatorPositionVal = returnText('AVAILABLE',18,blue),
+			engineerPositionVal = returnText('AVAILABLE',18,blue),
+			commsPositionVal = returnText('AVAILABLE',18,blue),
+			doctorPositionVal = returnText('AVAILABLE',18,blue),
+			assignmentBoard = new Container()
 
-		vitalityLabel = returnText('VITALITY:',raceInfoFontSize,blue),
-		raceLabel = returnText('RACE:',raceInfoFontSize,blue),
-		durabilityLabel = returnText('DURABILITY:',raceInfoFontSize,blue),
-		learningRateLabel = returnText('LEARNING RATE:',raceInfoFontSize,blue),
+		sciencePositionLabel.y=(20*1)
+		navigatorPositionLabel.y=(20*2)
+		engineerPositionLabel.y=(20*3)
+		commsPositionLabel.y=(20*4)
+		doctorPositionLabel.y=(20*5)
+
+		captainPositionVal.x=200
+		sciencePositionVal.x=200
+		navigatorPositionVal.x=200
+		engineerPositionVal.x=200
+		commsPositionVal.x=200
+		doctorPositionVal.x=200
+
+		sciencePositionVal.y=(20*1)
+		navigatorPositionVal.y=(20*2)
+		engineerPositionVal.y=(20*3)
+		commsPositionVal.y=(20*4)
+		doctorPositionVal.y=(20*5)
+
+		assignmentBoard.x=390
+		assignmentBoard.y=40
+		assignmentBoard.addChild(captainPositionLabel,sciencePositionLabel,navigatorPositionLabel,engineerPositionLabel,commsPositionLabel,doctorPositionLabel,captainPositionVal,sciencePositionVal,navigatorPositionVal,engineerPositionVal,commsPositionVal,doctorPositionVal)
+		popupBody.addChild(assignmentBoard)
+		// personnel list
+		for (var i = 0; i < game.personnel.length; i++) {
+			game.personnel[i].number=i
+			var crewNameButton = drawButton({y:50*i,width:200,label:game.personnel[i].name,name:'crew-'+i,onClick:handleCrewNameButtonClick})
+			popupBody.addChild(crewNameButton)
+		}
+		if(ship.crew['CAPTAIN'].name!=null) 			captainPositionVal.text = ship.crew['CAPTAIN'].name
+		if(ship.crew['SCIENCE OFFICER'].name!=null) 	sciencePositionVal.text = ship.crew['SCIENCE OFFICER'].name
+		if(ship.crew['NAVIGATOR'].name!=null) 		navigatorPositionVal.text = ship.crew['NAVIGATOR'].name
+		if(ship.crew['ENGINEER'].name!=null) 		engineerPositionVal.text = ship.crew['ENGINEER'].name
+		if(ship.crew['COMMS OFFICER'].name!=null) 	commsPositionVal.text = ship.crew['COMMS OFFICER'].name
+		if(ship.crew['DOCTOR'].name!=null) 			doctorPositionVal.text = ship.crew['DOCTOR'].name
+	}else{
+		var race = currentCrewman.race,
+			raceInfo = personnelRaces[race],
+			crewmanInfoFontSize = 16,
+
+			statsValsX = 140,
+			skillsValsX = 165,
+			valY = 40,
+
+			nameLabel = returnText('NAME:',crewmanInfoFontSize,blue),			
+			vitalityLabel = returnText('VITALITY:',crewmanInfoFontSize,blue),
+			raceLabel = returnText('RACE:',crewmanInfoFontSize,blue),
+			durabilityLabel = returnText('DURABILITY:',crewmanInfoFontSize,blue),
+			learningRateLabel = returnText('LEARNING RATE:',crewmanInfoFontSize,blue),
+			
+			nameVal = returnText(currentCrewman.name,crewmanInfoFontSize,'white'),
+			vitalityVal = returnText('100%',crewmanInfoFontSize,'white'),
+			raceVal = returnText(race,crewmanInfoFontSize,'white'), // drawButton({x:0,y:0,label:race,width:100,onClick:handleRaceSelectClick,height:35}),
+			durabilityVal = returnText(raceInfo.durability,crewmanInfoFontSize,'white'),
+			learningRateVal = returnText(raceInfo.learningRate,crewmanInfoFontSize,'white'),
 		
-		vitalityVal = returnText('100%',raceInfoFontSize,'white'),
-		raceVal = drawButton({x:0,y:0,label:race,width:100,onClick:handleRaceSelectClick,height:40}), //returnText(race,raceInfoFontSize,'white'),
-		durabilityVal = returnText(raceInfo.durability,raceInfoFontSize,'white'),
-		learningRateVal = returnText(raceInfo.learningRate,raceInfoFontSize,'white'),
+			scienceLabel = returnText('SCIENCE:',crewmanInfoFontSize,blue),
+			navigationLabel = returnText('NAVIGATION:',crewmanInfoFontSize,blue),
+			engineeringLabel = returnText('ENGINEERING:',crewmanInfoFontSize,blue),
+			communicationsLabel = returnText('COMMUNICATIONS:',crewmanInfoFontSize,blue),
+			medicineLabel = returnText('MEDICINE:',crewmanInfoFontSize,blue),
+
+			scienceVal = returnText(currentCrewman.science,crewmanInfoFontSize,'white'),
+			navigationVal = returnText(currentCrewman.navigation,crewmanInfoFontSize,'white'),
+			engineeringVal = returnText(currentCrewman.engineering,crewmanInfoFontSize,'white'),
+			communicationsVal = returnText(currentCrewman.communications,crewmanInfoFontSize,'white'),
+			medicineVal = returnText(currentCrewman.medical,crewmanInfoFontSize,'white'),
+
+			trainScienceButton = drawButton({x:skillsValsX+40,y:valY*1,width:100,height:30,label:'train',name:currentCrewman.number+'-science',onClick:handleTrainButtonClick})
+			trainNavigatorButton = drawButton({x:skillsValsX+40,y:valY*2,width:100,height:30,label:'train',name:currentCrewman.number+'-navigation',onClick:handleTrainButtonClick})
+			trainEngineerButton = drawButton({x:skillsValsX+40,y:valY*3,width:100,height:30,label:'train',name:currentCrewman.number+'-engineering',onClick:handleTrainButtonClick})
+			trainCommsButton = drawButton({x:skillsValsX+40,y:valY*4,width:100,height:30,label:'train',name:currentCrewman.number+'-communications',onClick:handleTrainButtonClick})
+			trainDoctorButton = drawButton({x:skillsValsX+40,y:valY*5,width:100,height:30,label:'train',name:currentCrewman.number+'-medical',onClick:handleTrainButtonClick})
+
+			typeLabel = returnText('TYPE:',crewmanInfoFontSize,blue),
+			heightLabel = returnText('AVERAGE HEIGHT:',crewmanInfoFontSize,blue),
+			weightLabel = returnText('AVERAGE WEIGHT:',crewmanInfoFontSize,blue),
+
+			typeVal = returnText(raceInfo.type,crewmanInfoFontSize,'white'),
+			heightVal = returnText(raceInfo.height+' M',crewmanInfoFontSize,'white'),
+			weightVal = returnText(raceInfo.weight+' KG',crewmanInfoFontSize,'white')
+
+
+		vitalityLabel.y=valY*0
+		raceLabel.y=valY*1
+		durabilityLabel.y=valY*2
+		learningRateLabel.y=valY*3
+
+		vitalityVal.x=statsValsX
+		vitalityVal.y=valY*0
+		raceVal.x=statsValsX
+		raceVal.y=valY*1
+		durabilityVal.x=statsValsX
+		durabilityVal.y=valY*2
+		learningRateVal.x=statsValsX
+		learningRateVal.y=valY*3
+
+		nameLabel.y=valY*0
+		scienceLabel.y=valY*1
+		navigationLabel.y=valY*2
+		engineeringLabel.y=valY*3
+		communicationsLabel.y=valY*4
+		medicineLabel.y=valY*5
+
+		nameVal.x=skillsValsX
+		scienceVal.x=skillsValsX
+		navigationVal.x=skillsValsX
+		engineeringVal.x=skillsValsX
+		communicationsVal.x=skillsValsX
+		medicineVal.x=skillsValsX
+
+		nameVal.y=valY*0
+		scienceVal.y=valY*1
+		navigationVal.y=valY*2
+		engineeringVal.y=valY*3
+		communicationsVal.y=valY*4
+		medicineVal.y=valY*5
+
+		typeLabel.y=0
+		heightLabel.y=valY
+		weightLabel.y=valY*2
+		typeVal.y=0
+		heightVal.y=valY
+		weightVal.y=valY*2
+		typeVal.x=skillsValsX
+		heightVal.x=skillsValsX
+		weightVal.x=skillsValsX
+
+		var skillsContainer = new Container(),
+			statsContainer = new Container(),
+			infoContainer = new Container(),
+			raceBodyContainer = drawCreatureBody(race),
+			raceBodyBg = new Shape(),
+			bgScale = 1.5
+		raceBodyBg.graphics.beginStroke('black').ss(1).f('white')
+			.dr(0,0,300*bgScale,360*bgScale)
+			.mt(0,50*bgScale).lt(300*bgScale,50*bgScale)
+			.mt(0,100*bgScale).lt(300*bgScale,100*bgScale)
+			.mt(0,150*bgScale).lt(300*bgScale,150*bgScale)
+			.mt(0,200*bgScale).lt(300*bgScale,200*bgScale)
+			.mt(0,250*bgScale).lt(300*bgScale,250*bgScale)
+			.mt(0,300*bgScale).lt(300*bgScale,300*bgScale)
+			.mt(0,350*bgScale).lt(300*bgScale,350*bgScale)
+		raceBodyBg.regX = (300*bgScale)
+		raceBodyBg.regY = 360*bgScale
+		raceBodyBg.x=780
+		raceBodyBg.y=730
+		raceBodyContainer.regX = 50
+		raceBodyContainer.regY = 120
+		raceBodyContainer.x=600
+		raceBodyContainer.y=725
+		raceBodyContainer.scaleX = raceInfo.height*bgScale//raceInfo.height*bgScale
+		raceBodyContainer.scaleY = raceInfo.height*bgScale//raceInfo.height*bgScale
+		skillsContainer.y=valY
+		statsContainer.y=valY*8 //x=250
+		infoContainer.y=valY*13 //150
+		var bw = buttonGroupWidth(450,10,3)
+		var assignCaptainButton = drawButton({x:330+((bw+10)*0),y:40,width:bw,label:'CAPTAIN',onClick:handleAssignCrewmanButtonClick})
+			assignScienceOfficerButton = drawButton({x:330+((bw+10)*1),y:40,width:bw,label:'SCIENCE OFFICER',onClick:handleAssignCrewmanButtonClick})
+			assignNavigatorButton = drawButton({x:330+((bw+10)*2),y:40,width:bw,label:'NAVIGATOR',onClick:handleAssignCrewmanButtonClick})
+			assignEngineerButton = drawButton({x:330+((bw+10)*0),y:90,width:bw,label:'ENGINEER',onClick:handleAssignCrewmanButtonClick})
+			assignCommsOfficerButton = drawButton({x:330+((bw+10)*1),y:90,width:bw,label:'COMMS OFFICER',onClick:handleAssignCrewmanButtonClick})
+			assignDoctorButton = drawButton({x:330+((bw+10)*2),y:90,width:bw,label:'DOCTOR',onClick:handleAssignCrewmanButtonClick})
+
+		skillsContainer.addChild(nameLabel,nameVal,scienceLabel,navigationLabel,engineeringLabel,communicationsLabel,medicineLabel,scienceVal,navigationVal,engineeringVal,communicationsVal,medicineVal)
+		if(race!='ANDROID') skillsContainer.addChild(trainScienceButton,trainNavigatorButton,trainEngineerButton,trainCommsButton,trainDoctorButton)
+		statsContainer.addChild(vitalityLabel,vitalityVal,raceLabel,durabilityLabel,learningRateLabel,raceVal,durabilityVal,learningRateVal)
+		infoContainer.addChild(typeLabel,heightLabel,weightLabel,typeVal,heightVal,weightVal)
+		popupBody.addChild(raceBodyBg,skillsContainer,statsContainer,infoContainer,raceBodyContainer,assignCaptainButton,assignScienceOfficerButton,assignNavigatorButton,assignEngineerButton,assignCommsOfficerButton,assignDoctorButton)
+	}
+	moneyVal.y=700
+	popupBody.addChild(moneyVal)
+}
+function handleTrainButtonClick(event){
+	var crewNumber = parseInt(event.currentTarget.name.split('-')[0]),
+		skill = event.currentTarget.name.split('-')[1],
+		raceInfo = personnelRaces[currentCrewman.race]
 	
-		scienceLabel = returnText('SCIENCE:',raceInfoFontSize,blue),
-		navigationLabel = returnText('NAVIGATION:',raceInfoFontSize,blue),
-		engineeringLabel = returnText('ENGINEERING:',raceInfoFontSize,blue),
-		communicationsLabel = returnText('COMMUNICATIONS:',raceInfoFontSize,blue),
-		medicineLabel = returnText('MEDICINE:',raceInfoFontSize,blue),
-
-		scienceVal = returnText(raceInfo.science.min,raceInfoFontSize,'white'),
-		navigationVal = returnText(raceInfo.navigation.min,raceInfoFontSize,'white'),
-		engineeringVal = returnText(raceInfo.engineering.min,raceInfoFontSize,'white'),
-		communicationsVal = returnText(raceInfo.communications.min,raceInfoFontSize,'white'),
-		medicineVal = returnText(raceInfo.medical.min,raceInfoFontSize,'white'),
-
-		typeLabel = returnText('TYPE:',raceInfoFontSize,blue),
-		heightLabel = returnText('AVERAGE HEIGHT:',raceInfoFontSize,blue),
-		weightLabel = returnText('AVERAGE WEIGHT:',raceInfoFontSize,blue),
-
-		typeVal = returnText(raceInfo.type,raceInfoFontSize,'white'),
-		heightVal = returnText(raceInfo.height+' M',raceInfoFontSize,'white'),
-		weightVal = returnText(raceInfo.weight+' KG',raceInfoFontSize,'white'),
-
-		statsValsX = 140,
-		skillsValsX = 165,
-		valY = 20
-
-	vitalityLabel.y=0
-	raceLabel.y=valY
-	durabilityLabel.y=valY*2
-	learningRateLabel.y=valY*3
-
-	vitalityVal.x=statsValsX
-	vitalityVal.y=0
-	raceVal.x=statsValsX
-	raceVal.y=valY
-	durabilityVal.x=statsValsX
-	durabilityVal.y=valY*2
-	learningRateVal.x=statsValsX
-	learningRateVal.y=valY*3
-
-	scienceLabel.y=0
-	navigationLabel.y=valY
-	engineeringLabel.y=valY*2
-	communicationsLabel.y=valY*3
-	medicineLabel.y=valY*4
-
-	scienceVal.x=skillsValsX
-	navigationVal.x=skillsValsX
-	engineeringVal.x=skillsValsX
-	communicationsVal.x=skillsValsX
-	medicineVal.x=skillsValsX
-	scienceVal.y=0
-	navigationVal.y=valY
-	engineeringVal.y=valY*2
-	communicationsVal.y=valY*3
-	medicineVal.y=valY*4
-
-	typeLabel.y=0
-	heightLabel.y=valY
-	weightLabel.y=valY*2
-	typeVal.y=0
-	heightVal.y=valY
-	weightVal.y=valY*2
-	typeVal.x=skillsValsX
-	heightVal.x=skillsValsX
-	weightVal.x=skillsValsX
-
-	var skillsContainer = new Container(),
-		statsContainer = new Container(),
-		infoContainer = new Container(),
-		raceBodyContainer = drawCreatureBody(race),
-		raceBodyBg = new Shape(),
-		bgScale = 1.5
-	raceBodyBg.graphics.beginStroke('black').ss(1).f('white')
-		.dr(0,0,300*bgScale,360*bgScale)
-		.mt(0,50*bgScale).lt(300*bgScale,50*bgScale)
-		.mt(0,100*bgScale).lt(300*bgScale,100*bgScale)
-		.mt(0,150*bgScale).lt(300*bgScale,150*bgScale)
-		.mt(0,200*bgScale).lt(300*bgScale,200*bgScale)
-		.mt(0,250*bgScale).lt(300*bgScale,250*bgScale)
-		.mt(0,300*bgScale).lt(300*bgScale,300*bgScale)
-		.mt(0,350*bgScale).lt(300*bgScale,350*bgScale)
-	raceBodyBg.regX = (300*bgScale)
-	raceBodyBg.regY = 360*bgScale
-	raceBodyBg.x=780
-	raceBodyBg.y=730
-	raceBodyContainer.regX = 50
-	raceBodyContainer.regY = 120
-	raceBodyContainer.x=600
-	raceBodyContainer.y=725
-	raceBodyContainer.scaleX = raceInfo.height*bgScale//raceInfo.height*bgScale
-	raceBodyContainer.scaleY = raceInfo.height*bgScale//raceInfo.height*bgScale
-	statsContainer.y=150 //x=250
-	infoContainer.y=300 //150
-	
-	skillsContainer.addChild(scienceLabel,navigationLabel,engineeringLabel,communicationsLabel,medicineLabel,scienceVal,navigationVal,engineeringVal,communicationsVal,medicineVal)
-	statsContainer.addChild(vitalityLabel,vitalityVal,raceLabel,durabilityLabel,learningRateLabel,raceVal,durabilityVal,learningRateVal)
-	infoContainer.addChild(typeLabel,heightLabel,weightLabel,typeVal,heightVal,weightVal)
-	popupBody.addChild(raceBodyBg,skillsContainer,statsContainer,infoContainer,raceBodyContainer)
+	currentCrewman[skill]=currentCrewman[skill]+raceInfo.learningRate>raceInfo[skill].max?raceInfo[skill].max:currentCrewman[skill]+raceInfo.learningRate
+	if(currentCrewman[skill]<raceInfo[skill].max) game.money -= trainingCost
+	buildPersonnelPopup(crewNumber)
+}
+function handleCrewNameButtonClick(event){
+	var crewNumber =  parseInt(event.currentTarget.name.split('-')[1])
+	buildPersonnelPopup(crewNumber)
+}
+function handleAssignCrewmanButtonClick(event){
+	var position = event.currentTarget.name
+	ship.crew[position] = currentCrewman
+	buildPersonnelPopup()
 }
 function buildStatus(){
 	//console.log("buildStatus")
@@ -2888,7 +3210,8 @@ function moveShip(dir){
 		        		changeCoords(game.coordX+moveDist,game.coordY+moveDist)
 		        	}
 			    	if(ship.enginesOn && shipIsInHyperspace()){
-			    		burnFuel(moveDist)
+			    		var amountOfFuelBurned = 0.56-(0.8*ship.engineClass)
+			    		burnFuel(moveDist*amountOfFuelBurned)
 			    	}else{
 			    		ship.enginesOn = true
 			    	}
