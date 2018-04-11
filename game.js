@@ -375,6 +375,14 @@ var debug = false,
 	starSystemMapContainer   = new Container(),
 	starSystemContainer      = new Container(),
 	topNebulaContainer 		 = new Container(),
+	captainMedicalReadout	 = new Container(),
+	scienceOffMedicalReadout = new Container(),
+	navigatorMedicalReadout	 = new Container(),
+	engineerMedicalReadout	 = new Container(),
+	commsOffMedicalReadout	 = new Container(),
+	doctorMedicalReadout	 = new Container(),
+	allMedicalReadoutsCont   = new Container(),
+	encounterInfo 			 = {},
 	popupWidth               = 800,
 	popupHeight              = 800,
 	currentPlanetType        = 0,
@@ -447,6 +455,7 @@ var debug = false,
  		hpMax               : 100,
  		isInEncounter       : false,
  		isCommunicating 	: false,
+ 		patientToHeal       : '',
  		crew 				: {
  									'CAPTAIN':{},
  									'SCIENCE OFFICER':{},
@@ -737,8 +746,9 @@ function enterHyperspace(dir){
 	addTextToDialog('Entering hyperspace.')
 	buildShipUI()
 }
-function enterEncounter(){
+function enterEncounter(name){
 	ship.isInEncounter = true
+	encounterInfo = encounters1[name]
 	buildShipUI()
 }
 function beginCommunications(){
@@ -782,6 +792,7 @@ function init(){
 			showSplashScreen = false
 			if(game.convoLog == null) game.convoLog = sf1Options.convoLog
 			if(game.personnel == null) game.personnel = sf1Options.personnel
+			if(ship.patientToHeal == null) ship.patientToHeal = ''
 			//ship.crew=[]
 			// game = sf1Options
 			// ship = shipOptions
@@ -903,7 +914,7 @@ function addTextToDialog(text){
 	if(dialogTextArray.length>=6){	
 		dialogTextArray.splice(0,1)
 	}
-	dialogTextArray.push(text)
+	dialogTextArray.push(makeCap(text))
 }
 function addTextToComms(text,color){	
 	commsTextArray=[]
@@ -1545,11 +1556,11 @@ function buildCommsPopup(){
 		statementButton = drawButton({width:bw,label:'statement',onClick:handleStatementButtonClick}),
 		questionButton = drawButton({x:bw+10,width:bw,label:'question',onClick:handleQuestionButtonClick}),
 		postureButton = drawButton({x:bw*2+20,width:bw,label:'posture',onClick:handlePostureButtonClick}),
-		terminateButton = drawButton({x:bw*3+30,width:bw,label:'terminate',onClick:handleTerminateButtonClick})
-
-	commScreen.graphics.s(blue).ss(borderWidth).rr(0,40,780,480,borderRadius)
+		terminateButton = drawButton({x:bw*3+30,width:bw,label:'terminate',onClick:handleTerminateButtonClick}),
+		commsClip = new Shape()
+	commsClip.graphics.f('grey').rr(0,0,760,460,borderRadius)
+	commScreen.graphics.f('grey').s(blue).ss(borderWidth).rr(0,40,780,480,borderRadius)
 	commDialogScreen.graphics.s(blue).ss(borderWidth).rr(0,530,780,200,borderRadius)
-	// var commsTextLines = []
 	for (var i = 0; i < commsTextArray.length; i++) {
 		var text = commsTextArray[i].split('@')[0]
 		var color = commsTextArray[i].split('@')[1]
@@ -1557,37 +1568,80 @@ function buildCommsPopup(){
 		commsText.x=5
 		commsText.y=5+(i*22)
 		commsText.lineWidth = 760
-		// console.log('commsText',commsText.getMetrics())
-
-		// commsTextLines.push.apply(commsTextLines,commsText.getMetrics().lines)
-
 		commDialogScreenContainer.addChild(commsText)
 	}
-		// console.log("commsTextLines", commsTextLines);
-
+	console.log("encounterInfo.race", encounterInfo.race)
 	commDialogScreenContainer.x=10
 	commDialogScreenContainer.y=530
 	commAlienCommsContainer.x=10
 	commAlienCommsContainer.y=50
-	commAlienCommsContainer.addChild(drawSpeminCommScreen())
+	var alien = drawAlienCommScreen(encounterInfo.race)
+	commAlienCommsContainer.addChild(alien)
 	popupButtons.addChild(statementButton,questionButton,postureButton,terminateButton)
 	popupBody.addChild(commScreen,commDialogScreen,commDialogScreenContainer,commAlienCommsContainer)
-}		
+}	
+function drawAlienCommScreen(race){
+	var clip = new Graphics().dr(0,0,770,470)
+	if(race == 'Elowan'){
+		var body = drawCreature(0,0,elowanShape,8,4,clip)
+ 	}else if(race == 'Veloxi'){
+		var body = drawCreature(10,0,veloxShape,8,4,clip)
+ 	}else if(race == 'Thrynn'){
+		var body = drawCreature(10,0,thrynnShape,8,4,clip)
+ 	}else if(race == 'Mechan 9'){
+		var body = drawCreature(0,0,androidShape,8,4,clip)
+ 	}else if(race == 'Spemin'){
+		var body = drawSpeminCommScreen()
+ 	}
+ 	return body
+}	
 function handleDistressCallButtonClick(event){
-		//console.log('TODO: SEND DISTRESS SIGNAL')
-		increaseFuel(20)
-		buildStatus()
-		addTextToDialog('Sorry Sir, we don\'t have a distress signal yet.')
-		closePopup()
-		//buildShipViewScreen()
+	increaseFuel(20)
+	buildStatus()
+	addTextToDialog('Sorry Sir, we don\'t have a distress signal yet.')
+	closePopup()
 }
 function buildEngineeringPopup(){
-	showPopup({title:'TRADE DEPOT'})
+	showPopup({title:'Engineering'})
 }		
 function buildMedicalPopup(){
-	showPopup({title:'TRADE DEPOT'})
-}
+	showPopup({title:'medical'})
+	
+	var crew = Object.keys(ship.crew)
+	// console.log("crew", crew);
+	allMedicalReadoutsCont.removeAllChildren()
+	for (var i = 0; i <crew.length; i++) {
+		var medicalReadoutCont = new Container(),
+			vit = ship.crew[crew[i]].vitality,
+			crewName = returnText(ship.crew[crew[i]].name,18,vit<10?'red':blue),			
+			healButton = drawButton({x:600,y:-10,with:100,label:'Heal',onClick:handleHealButtonClick,name:crew[i]})
+		// healButton.visible = vit<100
+		if(crew[i]=='CAPTAIN'){
+			captainMedicalReadout.addChild(crewName,healButton)
+			captainMedicalReadout.y=80*i
+		}else if(crew[i]=='SCIENCE OFFICER'){
+			scienceOffMedicalReadout.addChild(crewName,healButton)
+			scienceOffMedicalReadout.y=80*i
+		}else if(crew[i]=='NAVIGATOR'){
+			navigatorMedicalReadout.addChild(crewName,healButton)
+			navigatorMedicalReadout.y=80*i
+		}else if(crew[i]=='ENGINEER'){
+			engineerMedicalReadout.addChild(crewName,healButton)
+			engineerMedicalReadout.y=80*i
+		}else if(crew[i]=='COMMS OFFICER'){
+			commsOffMedicalReadout.addChild(crewName,healButton)
+			commsOffMedicalReadout.y=80*i
+		}else if(crew[i]=='DOCTOR'){
+			doctorMedicalReadout.addChild(crewName,healButton)
+			doctorMedicalReadout.y=80*i
+		}
+		allMedicalReadoutsCont.addChild(captainMedicalReadout,scienceOffMedicalReadout,navigatorMedicalReadout,engineerMedicalReadout,commsOffMedicalReadout,doctorMedicalReadout)
+	}
 
+	popupBody.addChild(allMedicalReadoutsCont)
+	popupBody.y=80
+	
+}
 function buildShipConfigPopup(part){
 	var shipBuildout = {
 		'ENGINES':{class:ship.engineClass,max:ship.class.engineClassMax},
@@ -1850,7 +1904,7 @@ function buildPersonnelPopup(crewNumber){
 			learningRateLabel = returnText('LEARNING RATE:',crewmanInfoFontSize,blue),
 			
 			nameVal = returnText(currentCrewman.name,crewmanInfoFontSize,'white'),
-			vitalityVal = returnText('100%',crewmanInfoFontSize,'white'),
+			vitalityVal = returnText(currentCrewman.vitality+'%',crewmanInfoFontSize,'white'),
 			raceVal = returnText(race,crewmanInfoFontSize,'white'), // drawButton({x:0,y:0,label:race,width:100,onClick:handleRaceSelectClick,height:35}),
 			durabilityVal = returnText(raceInfo.durability,crewmanInfoFontSize,'white'),
 			learningRateVal = returnText(raceInfo.learningRate,crewmanInfoFontSize,'white'),
@@ -1952,6 +2006,15 @@ function buildPersonnelPopup(crewNumber){
 		raceBodyContainer.y=725
 		raceBodyContainer.scaleX = raceInfo.height*bgScale//raceInfo.height*bgScale
 		raceBodyContainer.scaleY = raceInfo.height*bgScale//raceInfo.height*bgScale
+		var redX = new Shape()
+		redX.graphics.s('red').ss(20).mt(0,0).lt(300*bgScale,360*bgScale).mt(300*bgScale,0).lt(0,360*bgScale)
+
+		redX.regX = (300*bgScale)
+		redX.regY = 360*bgScale
+		redX.x=780
+		redX.y=730
+
+		redX.visible = currentCrewman.vitality<=0
 		skillsContainer.y=valY
 		statsContainer.y=valY*8 //x=250
 		infoContainer.y=valY*13 //150
@@ -1967,7 +2030,7 @@ function buildPersonnelPopup(crewNumber){
 		if(race!='ANDROID') skillsContainer.addChild(trainScienceButton,trainNavigatorButton,trainEngineerButton,trainCommsButton,trainDoctorButton)
 		statsContainer.addChild(vitalityLabel,vitalityVal,raceLabel,durabilityLabel,learningRateLabel,raceVal,durabilityVal,learningRateVal)
 		infoContainer.addChild(typeLabel,heightLabel,weightLabel,typeVal,heightVal,weightVal)
-		popupBody.addChild(raceBodyBg,skillsContainer,statsContainer,infoContainer,raceBodyContainer,assignCaptainButton,assignScienceOfficerButton,assignNavigatorButton,assignEngineerButton,assignCommsOfficerButton,assignDoctorButton)
+		popupBody.addChild(raceBodyBg,skillsContainer,statsContainer,infoContainer,raceBodyContainer,assignCaptainButton,assignScienceOfficerButton,assignNavigatorButton,assignEngineerButton,assignCommsOfficerButton,assignDoctorButton,redX)
 	}
 	moneyVal.y=700
 	popupBody.addChild(moneyVal)
@@ -2341,15 +2404,20 @@ function dialog(text){
 
 function drawCreatureBody(race){
 	if(race == 'HUMAN')
-		return drawHumanBody()
+		//return drawHumanBody()
+		return drawCreature(0,0,humanShape,1,1)
 	else if(race=='VELOX')
-		return drawVeloxBody()
+		// return drawVeloxBody()
+		return drawCreature(0,0,veloxShape,1,1)
 	else if(race == 'THRYNN')
-		return drawThrynnBody()
+		// return drawThrynnBody()
+		return drawCreature(0,0,thrynnShape,1,1)
 	else if(race == 'ELOWAN')
-		return drawElowanBody()
+		//return drawElowanBody()
+		return drawCreature(0,0,elowanShape,1,1)
 	else if(race == 'ANDROID')
-		return drawAndroidBody()
+		// return drawAndroidBody()
+		return drawCreature(0,0,androidShape,1,1)
 }
 
 function blur(s){
@@ -2506,6 +2574,7 @@ function drawShip(options){
 		.dr(45,30,10,50+hullY)
 		// wings
 		.beginFill(baseColor)
+		.es()
 		.mt(50,30)
 		.lt(25,30)
 		.lt(25,27)
@@ -2514,8 +2583,9 @@ function drawShip(options){
 		.lt(75,27)
 		.lt(75,30)
 		// bridge
+		.s(darkColor).ss(0.5)
 		.beginRadialGradientFill([lightColor,baseColor], [0, 1], 50, 20, 0, 50, 20, 15)
-		.dc(50,20,15).ef().es()
+		.dc(50,20,15).ef()
 		.beginFill(darkColor)
 		.mt(40,20)
 		.qt(40,10,50,10)
@@ -2524,6 +2594,15 @@ function drawShip(options){
 		.qt(55,15,50,15)
 		.qt(45,15,45,20)
 		.lt(40,20)
+		.ef()
+		.es()
+	var details = new Shape()
+	details.graphics
+		.s(darkColor).ss(0.25)
+		.dc(50,20,7)
+		.dc(50,20,13)
+
+		
 
 	if(ship.laserClass>0 && options.drawWeapons){
 		shipShape.graphics.beginFill('grey').dc(50,92,5).ef()
@@ -2589,7 +2668,20 @@ function drawShip(options){
 		}
 	}
 	engineFlare.visible = ship.enginesOn
-	shipCont.addChild(shipShape,engineFlare)
+	shipCont.addChild(shipShape,details,engineFlare)
+
+	//for (var i = 0; i < 8; i++) {
+		var line = new Shape()
+		line.regX = 50
+		line.regY = 20
+		line.graphics
+			.mt(43,20)
+			.lt(35,20)
+			.es()
+		line.rotation = 90//45*i
+		shipCont.addChild(line)
+	//}
+
 	shipCont.scaleX = options.scale
 	shipCont.scaleY = options.scale
 	return shipCont
@@ -2727,6 +2819,12 @@ function handleTick(event){
     if (!event.paused) {
 	    // Store
 	    if(doSaveGame){
+	    	game.personnel[ship.crew.CAPTAIN.number] = ship.crew.CAPTAIN
+	    	game.personnel[ship.crew['SCIENCE OFFICER'].number] = ship.crew['SCIENCE OFFICER']
+	    	game.personnel[ship.crew['COMMS OFFICER'].number] = ship.crew['COMMS OFFICER']
+	    	game.personnel[ship.crew.NAVIGATOR.number] = ship.crew.NAVIGATOR
+	    	game.personnel[ship.crew.ENGINEER.number] = ship.crew.ENGINEER
+	    	game.personnel[ship.crew.DOCTOR.number] = ship.crew.DOCTOR
 		    gameSave.game 		 = game
 		    gameSave.ship        = ship 
 	    	localStorage.setItem('gameSave', JSON.stringify(gameSave));
@@ -2791,12 +2889,27 @@ function handleTick(event){
 		    	warningLight.visible=false
 		    }
 	    } 
+        		
+        	// medical readouts
+        	
+		    if(i==0){
+	    		hb=100
+	    	}else if(i==12){
+	    		hb=-100
+	    	}else{
+	    		hb=0
+	    	}
+	    	// console.log("hb", hb);
+        	updateMedical()
+			
+			// end medical readouts
+        // 4 times a second
+        if(i==0 || i==6 || i==12 || i == 18){			        	
+	        
 			if(ship.enginesOn){
         		moveShip(ship.orientation)
         		//returnToBridge()
         	}
-        // 4 times a second
-        if(i==0 || i==6 || i==12 || i == 18){			        	
 	        //if(doCheck){
 			    
 			    if(tooHot&&doCheck){	
@@ -2833,9 +2946,19 @@ function handleTick(event){
         }
         // twice a second
         if(i==0 || i==12){ 
+        	
         }
         // once a second
         if(i==0){
+        	if(ship.patientToHeal!=''){
+	    		if(ship.crew[ship.patientToHeal].vitality>=100){
+	    			ship.patientToHeal = ''
+	    		}
+        		ship.crew[ship.patientToHeal].vitality += 0.001*ship.crew.DOCTOR.medical
+        	}
+        	// console.log("1 second tick");
+        	// kill the captain
+        	// ship.crew['CAPTAIN'].vitality = ship.crew['CAPTAIN'].vitality<0?100:ship.crew['CAPTAIN'].vitality-1
         	if(ship.isCommunicating){
         		if(commDelay<0){
         			commDelay = rifi(3,5)
@@ -2845,7 +2968,7 @@ function handleTick(event){
 
         		if(commDelay==0 && subjectOfConversation!=null && subjectOfConversation!='' && responseRecieved==false){
         			console.log("subjectOfConversation", subjectOfConversation);
-	        		var race = 'SPEMIN'
+	        		var race = makeCap(encounterInfo.race)
 					getResponseToQuestion(race,subjectOfConversation)
 				}
         	}
@@ -2894,6 +3017,89 @@ function handleTick(event){
     }
 	buildDialogScreen()
     stage.update()
+}
+var hb=0,	
+	ekgw=400,
+	ekgh=100,
+	px=0,
+	opx=0,
+	speed=30,
+	py=ekgh*0.8,
+	opy=py,
+	scanBarWidth=50
+function harm(pos){
+	ship.crew[pos].vitality = ship.crew[pos].vitality-10<0?100:ship.crew[pos].vitality-10
+}
+function updateMedical(){	
+	var crew = Object.keys(ship.crew)
+	for (var ci = 0; ci <crew.length; ci++) {
+		var vit = Math.floor(ship.crew[crew[ci]].vitality),
+			crewvitality = returnText(vit+'%',18,vit<10?'red':blue),
+			indicator = new Shape(),
+			indicatorCont = new Container(),
+			scale = 3,
+			vitX = 200+(vit*scale),
+			medIndicator = new Shape()
+
+		medIndicator.graphics
+			.f('white')
+			.dr(0,0,20,20)
+			.f('red')
+			.dr(20/3,0,20/3,20)
+			.dr(0,20/3,20,20/3)
+		medIndicator.visible=ship.patientToHeal == crew[ci]
+		medIndicator.x=230+(100*scale)
+		indicator.graphics
+			.f('green')
+			.dr(200,0,vit*scale,20)
+			.f('red')
+			.dr(200+(vit*scale),0,(100*scale)-(vit*scale),20)
+			.f('white')
+			.mt(vitX,-5)
+			.lt(vitX-5,-5)
+			.lt(vitX,10)
+			.lt(vitX+5,-5)
+			.cp()
+		//indicator.x=40
+		crewvitality.textAlign='center'
+		crewvitality.y=-30
+		crewvitality.x=vitX
+		indicatorCont.addChild(medIndicator,crewvitality,indicator)
+		
+		if(crew[ci]=='CAPTAIN'){
+			if(captainMedicalReadout.children.length>2) captainMedicalReadout.removeChildAt(2)
+			captainMedicalReadout.addChildAt(indicatorCont,2)
+		}else if(crew[ci]=='SCIENCE OFFICER'){
+			if(scienceOffMedicalReadout.children.length>2) scienceOffMedicalReadout.removeChildAt(2)
+			scienceOffMedicalReadout.addChildAt(indicatorCont,2)
+		}else if(crew[ci]=='NAVIGATOR'){
+			if(navigatorMedicalReadout.children.length>2) navigatorMedicalReadout.removeChildAt(2)
+			navigatorMedicalReadout.addChildAt(indicatorCont,2)
+		}else if(crew[ci]=='ENGINEER'){
+			if(engineerMedicalReadout.children.length>2) engineerMedicalReadout.removeChildAt(2)
+			engineerMedicalReadout.addChildAt(indicatorCont,2)
+		}else if(crew[ci]=='COMMS OFFICER'){
+			if(commsOffMedicalReadout.children.length>2) commsOffMedicalReadout.removeChildAt(2)
+			commsOffMedicalReadout.addChildAt(indicatorCont,2)
+		}else if(crew[ci]=='DOCTOR'){
+			if(doctorMedicalReadout.children.length>2) doctorMedicalReadout.removeChildAt(2)
+			doctorMedicalReadout.addChildAt(indicatorCont,2)
+		}
+	}
+}
+function handleHealButtonClick(event){
+	var patient = event.currentTarget.name
+	if(ship.crew[patient].vitality==100){
+		addTextToDialog('The '+patient+' needs no treatment.')
+	}
+	if(ship.crew[patient].vitality<100 && ship.crew[patient].vitality>0){
+		ship.patientToHeal = patient
+		addTextToDialog('Beginning treatment now.')
+	}
+	if(ship.crew[patient].vitality<=0){
+		addTextToDialog('He\' dead Jim. :(')
+	}
+	console.log("ship.patientToHeal", ship.patientToHeal);
 }
 var tooHot=false
 function getDistFromSun(){
@@ -2985,7 +3191,8 @@ function collisionDetection(){
         }else if(underShip.name.includes('dust')){			        	
 			atDust()
         }else if(underShip.name.includes('encounter')){			        	
-			enterEncounter()
+			
+			enterEncounter(underShip.name.split('-')[1])
         }
     }else{
     	atNothing()
@@ -3210,7 +3417,8 @@ function moveShip(dir){
 		        		changeCoords(game.coordX+moveDist,game.coordY+moveDist)
 		        	}
 			    	if(ship.enginesOn && shipIsInHyperspace()){
-			    		var amountOfFuelBurned = 0.56-(0.8*ship.engineClass)
+			    		var amountOfFuelBurned = 0.56-(0.01*(8*ship.engineClass))
+			    		console.log("amountOfFuelBurned", amountOfFuelBurned);
 			    		burnFuel(moveDist*amountOfFuelBurned)
 			    	}else{
 			    		ship.enginesOn = true
@@ -3248,7 +3456,7 @@ function changeCoords(x,y){
 		game.coordX=round(x,2)
 		game.coordY=round(y,2)
 	}else if(shipIsInSystem()){
-		var systemMoveDist = ship.atPlanet?systemScale/40:systemScale/(10/ship.engineClass)
+		var systemMoveDist = ship.atPlanet?systemScale/40:systemScale/(5/ship.engineClass)
 		
 		if(ship.orientation==0){
 			game.systemY += systemMoveDist

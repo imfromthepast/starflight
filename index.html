@@ -58,6 +58,15 @@
 				max-width: 100%;
 				height: auto;
 			}
+			#debugInfo{
+				position: absolute;
+				bottom:100;
+			}
+			#encounterButtons,#debugButtons{
+				display:inline-block;
+				width: 50%;
+				vertical-align: top;
+			}
 			body{
 	        	font-family: 'Verdana',"Helvetica Neue", Helvetica, Arial, sans-serif;
 				font-size: 12px;
@@ -77,7 +86,21 @@
     <body onload="init()"> 
     	<canvas id="stage" height="900px" width="1600px"></canvas>
     	<div id="debugInfo"></div>
-    	<div onclick="enterEncounter()">enter Encounter</div>
+    	<div id="encounterButtons">
+    		<button onclick="enterEncounter('178x88')">Encounter Elowan</button>
+    		<button onclick="enterEncounter('112x134')">Encounter Veloxi</button>
+    		<button onclick="enterEncounter('134x53')">Encounter Thrynn</button>
+    		<button onclick="enterEncounter('149x103')">Encounter Mechan 9</button>
+    		<button onclick="enterEncounter('115x145')">Encounter Spemin</button>
+    	</div>
+    	<div id="debugButtons">
+    		<button onclick="harm('CAPTAIN')">Harm Captain</button>
+    		<button onclick="harm('SCIENCE OFFICER')">Harm Science Officer</button>
+    		<button onclick="harm('NAVIGATOR')">Harm Navigator</button>
+    		<button onclick="harm('ENGINEER')">Harm Engineer</button>
+    		<button onclick="harm('COMMS OFFICER')">Harm Comms Officer</button>
+    		<button onclick="harm('DOCTOR')">Harm Doctor</button>
+    	</div>
     </body>  
 	<script src="drawCreatures.js"></script>
 	<script src="game.js"></script>

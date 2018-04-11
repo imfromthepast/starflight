@@ -570,7 +570,7 @@ answers={
 	},
 	'MECHAN 9':{
 		'THEMSELVES':[
-			'Our mission was the establish the underground colony of heaven. We were to be followed by you, Group 9, one year later, but you did not arrive.',
+			'Our mission was to establish the underground colony of Heaven. We were to be followed by you, Group 9, one year later, but you did not arrive.',
 			'We left Earth in 3479, sent out by the Institute with instructions for standard Noah project procedure.',
 			'Our instructions were to patrol the area within 8 sectors of the Heaven system and repel any invaders after Heaven was established.',
 			'Initially Heaven was only marginally habitable. It was necessary to completely terra-form it and engineer a suitable biota.',
@@ -1963,7 +1963,7 @@ elementSymbols={
 	'Zn':'zinc',
 	'Si':'silicon'
 },
-races=['','Elowan','Gazurtoid','Mechans','Mysterions','Nomad Probe','Spemin','Thrynn','Veloxi','Uhlek','Veloxi Drone','Minstrel','','','','','','','','','','Interstel Police'],
+races=['','Elowan','Gazurtoid','Mechan 9','Mysterions','Nomad Probe','Spemin','Thrynn','Veloxi','Uhlek','Veloxi Drone','Minstrel','','','','','','','','','','Interstel Police'],
 encounters1={
 	"112x134":{race:"Veloxi",x:112,y:134,max:1,atATime:1,transport:0,scout:12,warship:0,ability:false,on:true},
 	"118x128":{race:"Veloxi",x:118,y:128,max:1,atATime:1,transport:0,scout:12,warship:0,ability:false,on:true},
@@ -2053,10 +2053,10 @@ encounters1={
 	"141x57":{race:"Elowan",x:141,y:57,max:3,atATime:3,transport:5,scout:6,warship:7,ability:false,on:true},
 	"164x63":{race:"Elowan",x:164,y:63,max:3,atATime:3,transport:5,scout:6,warship:7,ability:false,on:true},
 	"154x72":{race:"Elowan",x:154,y:72,max:3,atATime:3,transport:5,scout:6,warship:7,ability:false,on:true},
-	"149x103":{race:"Mechans",x:149,y:103,max:3,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
-	"149x111":{race:"Mechans",x:149,y:111,max:3,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
-	"141x103":{race:"Mechans",x:141,y:103,max:3,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
-	"141x111":{race:"Mechans",x:141,y:111,max:3,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
+	"149x103":{race:"Mechan 9",x:149,y:103,max:3,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
+	"149x111":{race:"Mechan 9",x:149,y:111,max:3,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
+	"141x103":{race:"Mechan 9",x:141,y:103,max:3,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
+	"141x111":{race:"Mechan 9",x:141,y:111,max:3,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
 	"115x45":{race:"Gazurtoid",x:115,y:45,max:1,atATime:1,transport:0,scout:14,warship:0,ability:false,on:true},
 	"110x72":{race:"Gazurtoid",x:110,y:72,max:1,atATime:1,transport:0,scout:14,warship:0,ability:false,on:true},
 	"98x81":{race:"Gazurtoid",x:98,y:81,max:1,atATime:1,transport:0,scout:14,warship:0,ability:false,on:true},
@@ -2207,13 +2207,13 @@ encounters1={
 	"148x63":{race:"Elowan",x:148,y:63,max:6,atATime:3,transport:5,scout:6,warship:7,ability:true,on:true},
 	"160x48":{race:"Elowan",x:160,y:48,max:6,atATime:3,transport:5,scout:6,warship:7,ability:true,on:true},
 	"163x46":{race:"Elowan",x:163,y:46,max:6,atATime:3,transport:5,scout:6,warship:7,ability:true,on:true},
-	"145x107":{race:"Mechans",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
-	"145x107":{race:"Mechans",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
-	"145x107":{race:"Mechans",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
-	"145x107":{race:"Mechans",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
-	"145x107":{race:"Mechans",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:true,on:true},
-	"145x107":{race:"Mechans",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:true,on:true},
-	"145x107":{race:"Mechans",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:true,on:true},
+	"145x107":{race:"Mechan 9",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
+	"145x107":{race:"Mechan 9",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
+	"145x107":{race:"Mechan 9",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
+	"145x107":{race:"Mechan 9",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:false,on:true},
+	"145x107":{race:"Mechan 9",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:true,on:true},
+	"145x107":{race:"Mechan 9",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:true,on:true},
+	"145x107":{race:"Mechan 9",x:145,y:107,max:6,atATime:3,transport:0,scout:4,warship:0,ability:true,on:true},
 	"86x55":{race:"Gazurtoid",x:86,y:55,max:6,atATime:3,transport:0,scout:14,warship:15,ability:false,on:true},
 	"86x55":{race:"Gazurtoid",x:86,y:55,max:6,atATime:3,transport:0,scout:14,warship:15,ability:false,on:true},
 	"86x55":{race:"Gazurtoid",x:86,y:55,max:6,atATime:3,transport:0,scout:14,warship:15,ability:false,on:true},
@@ -2279,7 +2279,7 @@ encounters1={
 	"129x33":{race:"Thrynn",x:129,y:33,max:255,atATime:8,transport:0,scout:0,warship:10,ability:false,on:true},
 	"86x55":{race:"Gazurtoid",x:86,y:55,max:255,atATime:8,transport:0,scout:0,warship:15,ability:false,on:true},
 	"82x148":{race:"Spemin",x:82,y:148,max:255,atATime:8,transport:0,scout:0,warship:3,ability:false,on:true},
-	"145x107":{race:"Mechans",x:145,y:107,max:255,atATime:8,transport:0,scout:4,warship:0,ability:false,on:true},
+	"145x107":{race:"Mechan 9",x:145,y:107,max:255,atATime:8,transport:0,scout:4,warship:0,ability:false,on:true},
 	"68x66":{race:"Gazurtoid",x:68,y:66,max:1,atATime:1,transport:0,scout:14,warship:15,ability:false,on:true},
 	"175x94":{race:"Noah 9 Derelict",x:175,y:94,max:1,atATime:1,transport:23,scout:0,warship:0,ability:false,on:true}
 },
@@ -2297,7 +2297,7 @@ vessels = [
 	{type:"Spemin Warship",energy:10,bio:5,mass:700,size:1.4,firingRate:7,armorClass:5,shieldClass:0,immuneToMissles:false,immuneToLasers:false,laserClass:2,missleClass:1,plasma:false,elements:["Pb","Fe","Co"],endurium:5,debris:[10,7,2]},
 	
 	// 4
-	{type:"Mechans Scout",energy:200,bio:6,mass:200,size:0.4,firingRate:7,armorClass:0.5,shieldClass:2,immuneToMissles:false,immuneToLasers:false,laserClass:0,missleClass:2,plasma:false,elements:["Fe","Mg"],endurium:3,debris:[10,4]},
+	{type:"Mechan 9 Scout",energy:200,bio:6,mass:200,size:0.4,firingRate:7,armorClass:0.5,shieldClass:2,immuneToMissles:false,immuneToLasers:false,laserClass:0,missleClass:2,plasma:false,elements:["Fe","Mg"],endurium:3,debris:[10,4]},
 	
 	// 5
 	{type:"Elowan Transport",energy:0,bio:9,mass:350,size:0.7,firingRate:5,armorClass:0.25,shieldClass:3,immuneToMissles:false,immuneToLasers:false,laserClass:0,missleClass:0,plasma:false,elements:["Ni","Mo","Si"],endurium:3,debris:[5,3,2]},
