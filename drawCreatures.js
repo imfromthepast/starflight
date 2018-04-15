@@ -1878,6 +1878,38 @@ var thrynnShape = [
 		{t:'lt',v:[60.42, 75.97]}
 	]
 ]
+var elowanShipShapes=[
+	// scout
+	[
+		[
+			{t:'f',v:['black']},
+			{t:'s',v:['rgba(0,80,255,0.6)']},
+			{t:'ss',v:[1]},
+			{t:'dc',v:[280,130,40]}
+		],[
+			{t:'f',v:['black']},
+			{t:'s',v:['rgba(0,80,255,0.6)']},
+			{t:'ss',v:[1]},
+			{t:'mt',v:[100,130]},
+			{t:'lt',v:[10,10]},
+			{t:'lt',v:[320,130]},
+			{t:'lt',v:[10,250]},
+			{t:'cp',v:[]},
+			{t:'es',v:[]},
+			// {t:'s',v:['rgba(0,255,255,0.5)']},
+			{t:'ef',v:[]}
+		],[
+			{t:'f',v:['blue']},
+			{t:'ss',v:[1]},
+			{t:'dc',v:[280,130,30]},
+			{t:'es',v:[]}
+		],[
+			{t:'f',v:['red']},
+			{t:'ss',v:[1]},
+			{t:'dr',v:[180,110,50,40]}
+		]
+	]
+]
 function drawSpeminCommScreen(){
 	var bodyCont = new Container(),
 		body = new Shape(),

@@ -382,6 +382,9 @@ var debug = false,
 	commsOffMedicalReadout	 = new Container(),
 	doctorMedicalReadout	 = new Container(),
 	allMedicalReadoutsCont   = new Container(),
+	laserBeam 				 = new Shape(),
+	attackShip 				 = false,
+	fireMissle				 = false,
 	encounterInfo 			 = {},
 	popupWidth               = 800,
 	popupHeight              = 800,
@@ -747,8 +750,10 @@ function enterHyperspace(dir){
 	buildShipUI()
 }
 function enterEncounter(name){
+	console.log("name", name);
 	ship.isInEncounter = true
 	encounterInfo = encounters1[name]
+	console.log("encounterInfo", encounterInfo);
 	buildShipUI()
 }
 function beginCommunications(){
@@ -962,10 +967,206 @@ function disableButton(btn){
 function buildEncounterPopup(){
 	ship.enginesOn = false
 	showPopup({title:'encounter'})
-	var bw = buttonGroupWidth(780,10,2)
+
+	var encounterShipIcon = drawShip({
+		drawShields    : true,
+		drawWeapons    : true,
+		drawPods       : false,
+		scale          : 0.2,
+		lod            : 3,
+		animateShields : false
+	})
+	encounterShipIcon.regX = 50
+	encounterShipIcon.regY = 70
+	encounterShipIcon.rotation = ship.orientation
+	encounterShipIcon.x = 390
+	encounterShipIcon.y = -350
+	if(encounterInfo.scout>0){
+		for (var i = 0; i < encounterInfo.atATime; i++) {
+			var alienShip = drawRadarBlip(encounterInfo.race,'scout',encounterInfo.scout)			
+			alienShip.x=rifi(200,600)
+			alienShip.y=rifi(200,600)
+			popupBody.addChild(alienShip)
+		}
+	}
+	if(encounterInfo.transport>0){
+		for (var i = 0; i < encounterInfo.atATime; i++) {
+			var alienShip = drawRadarBlip(encounterInfo.race,'transport',encounterInfo.transport)
+			alienShip.x=rifi(200,600)
+			alienShip.y=rifi(200,600)
+			popupBody.addChild(alienShip)
+		}
+	}
+	if(encounterInfo.warship>0){
+		for (var i = 0; i < encounterInfo.atATime; i++) {
+			var alienShip = drawRadarBlip(encounterInfo.race,'warship',encounterInfo.warship)
+			alienShip.x=rifi(200,600)
+			alienShip.y=rifi(200,600)
+			popupBody.addChild(alienShip)
+		}
+	}
+	var bw = buttonGroupWidth(780,10,4)
 	var endEncounterButton = drawButton({label:'end encounter',width:bw,onClick:handleEndEncounterButtonClick})
 		hailButton = drawButton({x:(bw+10)*1,label:'hail',width:bw,onClick:handleHailButtonClick})
-	popupButtons.addChild(endEncounterButton,hailButton)
+		scanButton = drawButton({x:(bw+10)*2,label:'scan',width:bw,onClick:handleScanShipButtonClick})
+		attackButton = drawButton({x:(bw+10)*3,label:'attack',width:bw,onClick:handleAttackShipButtonClick})
+	popupButtons.addChild(endEncounterButton,hailButton,encounterShipIcon,scanButton,attackButton)
+}
+function drawRadarBlip(race,shipClass,type){	
+	var size = vessels[type].size
+	size = size>30?size/10:size
+	var alienShip = new Shape()
+
+	alienShip.graphics
+		.f('rgba(0,0,255,0.1)').s(blue).sd([10,20]).ss(2,'round')
+		.dc(0,0,size<1?20:size*20).es()
+		.f('green')
+		.dc(0,0,(80*0.2)*size)
+	alienShip.name = race+'-'+type
+	alienShip.addEventListener('click',handleAlienShipClick)
+	return alienShip
+}
+var turningDegrees = [0,45,90,135,180,225,270,315],
+	scanship = false
+function handleAlienShipClick(event){
+	console.log("event", event);
+	var a = Math.abs(390-event.target.x),
+		b = Math.abs(390-event.target.y),
+		c = Math.sqrt((a*a)+(b*b))
+		distance = c
+		console.log("distance", distance);
+	if(scanship){
+		var name = event.currentTarget.name,
+			race = name.split('-')[0],
+			shipType = name.split('-')[1]
+			shipInfo = vessels[shipType]
+		console.log("shipInfo", shipInfo);
+		buildShipScanPopup(shipInfo)
+		// console.log("name", name);
+	}
+	if(attackShip){
+		if(distance<200){
+			if(ship.laserClass>0){
+				laserBeam.graphics.s('red').ss(1).mt(390,390).lt(event.target.x,event.target.y)
+			}
+		}else{
+			if(ship.missleClass>0){
+				fireMissle = true
+			}
+		}
+	}
+	popupBody.addChild(laserBeam)
+	scanship = false
+	attackShip = false
+}
+function buildShipScanPopup(shipInfo){
+	var options = {title:'ship scan results',width:350,height:500,x:0,y:150}
+	var shipScanContainer = new Container()
+	var shipScanBg = new Shape()
+	shipScanBg.graphics
+		.s(blue).ss(borderWidth)
+		.f('black')
+		.rr(0,0,options.width,options.height,borderRadius)
+		//.f('grey')
+		.beginRadialGradientFill(['rgba(0,80,255,0.05)','rgba(0,80,255,0.5)'], [0,0.85], 175, 180, 0, 175, 180, 250)
+		.rr(10,50,330,260,borderRadius)
+		.ef().es()
+
+		var asl = drawGazurtoidShip({color: 'rgba(255,255,255,0.1)'})
+		var asr = flipX(asl)
+		asr.scaleX=-1
+		//asr.scaleY=0.1
+		asr.x=0
+	if(shipInfo.type.includes('Gazurtoid')){
+		var alienShip = new Container()
+		alienShip.addChild(asl,asr)
+		alienShip.scaleX=0.25
+		alienShip.scaleY=0.25
+	}else if(shipInfo.type.includes('Mechan')){
+		var alienShip =  drawShip({
+			drawShields    : false,
+			drawWeapons    : true,
+			drawPods       : true,
+			scale          : 2,
+			lod            : 3,
+			animateShields : false,
+			color 		   : 'rgba(255,255,255,0.1)',
+		})
+	}
+	//new Shape()//drawCreature(10,50,elowanShipShapes[0],1,1)
+	// alienShip.graphics
+	// 	.f('rgba(255,255,255,0.1')
+	// 	.dr(50,50,200,100)
+	// 	.f('rgba(255,255,255,0.1')
+	// 	.dr(60,60,180,80)
+	// 	.f('rgba(255,255,255,0.1')
+	// 	.dr(65,65,50,70)
+	// 	.f('rgba(255,255,255,0.1')
+	// 	.dr(150,70,40,60)
+	// 	.f('rgba(255,0,0,0.5')
+	// 	.dr(70,75,30,50)
+	// 	.f('rgba(0,80,255,0.5')
+	// 	.dr(150,75,30,50)
+	// 	.ef()
+	// 	.s(('rgba(255,0,0,0.5'))
+	// 	.ss(2)
+	// 	.mt(80,135)
+	// 	.lt(55,145)
+	alienShip.x=165
+	alienShip.y=180
+	alienShip.regX=50
+	alienShip.regY=70
+	alienShip.rotation = 90
+	var shipScanTitle = new Text(makeCap(options.title),'18px '+font,'white')
+	shipScanTitle.x=options.width/2
+	shipScanTitle.y=borderRadius
+	shipScanTitle.textAlign='center'
+	shipScanTitle.baseLine='top'
+	var scanData = [
+		['elements',shipInfo.elements],
+		['bio',shipInfo.bio],
+		['energy',shipInfo.energy],	
+		['mass',shipInfo.mass],
+		['size',shipInfo.size,' x your ship']
+	]
+	var scanAnalysis=[	
+		shipInfo.type,
+		'  Class '+shipInfo.shieldClass+' shields',
+		'  Class '+shipInfo.armorClass+' armor',
+		'  Class '+shipInfo.laserClass+' lasers',
+		'  Class '+shipInfo.missleClass+' missles'
+	]
+	shipScanContainer.addChild(shipScanBg,alienShip,shipScanTitle)
+	for (var i = 0; i < scanData.length; i++) {
+		var scanLabel = returnText(scanData[i][0],14,blue)
+		scanLabel.x=10
+		scanLabel.y=320+(i*30)
+		var mod = scanData[i][2]||''
+		var scanVal = returnText(scanData[i][1]+mod,14,'white')
+		scanVal.x=90
+		scanVal.y=320+(i*30)
+		shipScanContainer.addChild(scanLabel,scanVal)
+	}
+	var analysisLabel = returnText('analysis',14,blue)
+	analysisLabel.x=190
+	analysisLabel.y=320
+	shipScanContainer.addChild(analysisLabel)
+	for (var i = 0; i < scanAnalysis.length; i++) {
+		var analysisVal = returnText(scanAnalysis[i],14,'white')
+		analysisVal.x=190
+		analysisVal.y=340+(i*20)
+		shipScanContainer.addChild(analysisVal)
+	}
+	var shipVisual = new Shape()
+	shipScanContainer.x=options.x,
+	shipScanContainer.y=options.y
+	stage.addChild(shipScanContainer)
+}
+function handleScanShipButtonClick(){
+	scanship = true
+}
+function handleAttackShipButtonClick(){
+	attackShip = true
 }
 function buildStarmapPopup(){
 	showPopup({title:'STARMAP',width:windowWidth,height:windowHeight,x:0,y:0})
@@ -1220,7 +1421,7 @@ function showPopup(options){
 	popupButtons.y = h-50
 
 	var popupBg = new Shape()
-	popupBg.graphics.beginStroke(blue).ss(5).beginFill('rgba(0,0,0,1)')
+	popupBg.graphics.beginStroke(blue).ss(borderWidth).beginFill('rgba(0,0,0,1)')
 		.rr(0,0,w,h,borderRadius)
 	var popupTitle = new Text(makeCap(options.title),'18px '+font,'white')
 	popupTitle.x=options.width/2
@@ -2532,161 +2733,6 @@ function drawButton(options){
     return buttonCont	
 }
 
-//  /$$$$$$$  /$$$$$$$   /$$$$$$  /$$      /$$        /$$$$$$  /$$   /$$ /$$$$$$ /$$$$$$$
-// | $$__  $$| $$__  $$ /$$__  $$| $$  /$ | $$       /$$__  $$| $$  | $$|_  $$_/| $$__  $$
-// | $$  \ $$| $$  \ $$| $$  \ $$| $$ /$$$| $$      | $$  \__/| $$  | $$  | $$  | $$  \ $$
-// | $$  | $$| $$$$$$$/| $$$$$$$$| $$/$$ $$ $$      |  $$$$$$ | $$$$$$$$  | $$  | $$$$$$$/
-// | $$  | $$| $$__  $$| $$__  $$| $$$$_  $$$$       \____  $$| $$__  $$  | $$  | $$____/
-// | $$  | $$| $$  \ $$| $$  | $$| $$$/ \  $$$       /$$  \ $$| $$  | $$  | $$  | $$
-// | $$$$$$$/| $$  | $$| $$  | $$| $$/   \  $$      |  $$$$$$/| $$  | $$ /$$$$$$| $$
-// |_______/ |__/  |__/|__/  |__/|__/     \__/       \______/ |__/  |__/|______/|__/
-
-
-function drawShip(options){
-	var shipCont = new Container(),
-		shipShape = new Shape(),
-		baseColor = options.color!=null?options.color:'#555',
-		lightColor = options.color!=null?options.color:'#888',
-		darkColor = options.color!=null?options.color:'#333',
-		hullY = 0			
-
-	if(ship.missileClass>0 && options.drawWeapons){
-		shipShape.graphics.beginFill('grey').dc(20,95,5).dc(80,95,5).ef()
-		if(ship.weaponsArmed)shipShape.graphics.beginFill('red').dr(15,85+hullY,3,8).dr(82,85,3,8).ef()
-	}
-	shipShape.graphics
-		.beginFill(baseColor)
-		.beginStroke(darkColor)
-		// left engine
-		.rr(20,90+hullY,15,40,5)
-		.beginFill(darkColor)
-		.rr(23,93+hullY,9,34,3)
-		// right engine
-		.beginFill(baseColor)
-		.rr(65,90+hullY,15,40,5)
-		.beginFill(darkColor)
-		.rr(68,93+hullY,9,34,3)
-		// hull
-		.beginFill(baseColor)
-		.dr(30,80+hullY,40,20)
-		// neck
-		.beginFill(darkColor)
-		.dr(45,30,10,50+hullY)
-		// wings
-		.beginFill(baseColor)
-		.es()
-		.mt(50,30)
-		.lt(25,30)
-		.lt(25,27)
-		.lt(40,15)
-		.lt(60,15)
-		.lt(75,27)
-		.lt(75,30)
-		// bridge
-		.s(darkColor).ss(0.5)
-		.beginRadialGradientFill([lightColor,baseColor], [0, 1], 50, 20, 0, 50, 20, 15)
-		.dc(50,20,15).ef()
-		.beginFill(darkColor)
-		.mt(40,20)
-		.qt(40,10,50,10)
-		.qt(60,10,60,20)
-		.lt(55,20)
-		.qt(55,15,50,15)
-		.qt(45,15,45,20)
-		.lt(40,20)
-		.ef()
-		.es()
-	var details = new Shape()
-	details.graphics
-		.s(darkColor).ss(0.25)
-		.dc(50,20,7)
-		.dc(50,20,13)
-
-		
-
-	if(ship.laserClass>0 && options.drawWeapons){
-		shipShape.graphics.beginFill('grey').dc(50,92,5).ef()
-		if(ship.weaponsArmed)shipShape.graphics.beginFill('red').dr(45,83+hullY,3,8).dr(52,83,3,8).ef()
-	}
-	if(ship.plasmaClass>0 && options.drawWeapons){
-		shipShape.graphics.beginFill('grey').dc(50,25,5).ef()
-		if(ship.weaponsArmed)shipShape.graphics.beginFill('red').dr(48,15,4,10).ef()
-	}
-	var engineFlare = new Shape()
-	engineFlare.name='engineFlare'
-	//if(ship.enginesOn)shipShape.graphics
-	engineFlare.graphics.beginLinearGradientFill(['white','purple','rgba(0,0,0,0)'], [0,0.25,1], 0, 130, 0, 160)
-		.de(20,130,15,40)
-		.de(65,130,15,40)
-		.ef()
-
-	if(ship.shieldsUp && options.drawShields && ship.shieldClass>0){
-		var shieldCoords = [50,-10,90,-10,90,80,90,160,50,160,10,160,10,80,10,-10,50,-10]
-		shipShape.graphics
-			.beginStroke('red')
-			.ss(!options.animateShields?5:ship.shieldsVal<20?1:Math.round(ship.shieldsVal/20))
-			.mt(50,-10)
-			.qt(90,-10,90,80)
-			.qt(90,160,50,160)
-			.qt(10,160,10,80)
-			.qt(10,-10,50,-10)
-			.es()
-	}
-
-	var x,y
-	if(options.drawPods){
-		for (var i = 0; i < ship.cargoPods; i++) {
-			if(isEven(i)){
-				x = 40
-				y = i*3+35
-			}else{
-				x = 55
-			}	
-			shipShape.graphics.beginFill('grey').dr(x,y,5,5)
-			if(!isEven(i))
-				shipShape.graphics.beginFill('grey').dr(x-2,y+2,2,1)
-			else			
-				shipShape.graphics.beginFill('grey').dr(x+5,y+2,2,1)			
-		}
-		for (var i = 0; i < ship.blastoPods; i++) {
-			if(isEven(i)){
-				x = 40
-				y = i*3+65
-			}else{
-				x = 55
-			}	
-			shipShape.graphics.beginFill('white').dr(x,y,5,5)						
-		}
-		for (var i = 0; i < ship.jumpPods; i++) {
-			if(isEven(i)){
-				x = 40
-				y = i*3+75
-			}else{
-				x = 55
-			}	
-			shipShape.graphics.beginFill(blue).dr(x,y,5,5)						
-		}
-	}
-	engineFlare.visible = ship.enginesOn
-	shipCont.addChild(shipShape,details,engineFlare)
-
-	//for (var i = 0; i < 8; i++) {
-		var line = new Shape()
-		line.regX = 50
-		line.regY = 20
-		line.graphics
-			.mt(43,20)
-			.lt(35,20)
-			.es()
-		line.rotation = 90//45*i
-		shipCont.addChild(line)
-	//}
-
-	shipCont.scaleX = options.scale
-	shipCont.scaleY = options.scale
-	return shipCont
-}
-
 function drawStars(w,h,scale){
 	starsContainer.removeAllChildren()
 	xOffset = (-1*round(game.coordX-((w/scale)/2),1))	
@@ -2741,10 +2787,10 @@ function drawStars(w,h,scale){
 			topNebulaContainer.addChild(nebula.clone())
 		}
 	}
-	// var encounterPoint = new Shape()
-	// encounterPoint.graphics.f('white').dc(convertSFCoordsToScreenCoords(125,102,scale).x,convertSFCoordsToScreenCoords(125,102,scale).y,100)
-	// encounterPoint.name='encounter 125x102'
-	// starsContainer.addChild(encounterPoint)
+	var encounterPoint = new Shape()
+	encounterPoint.graphics.f('white').dc(convertSFCoordsToScreenCoords(125,102,scale).x,convertSFCoordsToScreenCoords(125,102,scale).y,100)
+	encounterPoint.name='encounter-126x157'
+	starsContainer.addChild(encounterPoint)
 }
 function drawFluxPoints(scale){
 	for (var i = 0; i < fluxDataKeys.length; i++) {
@@ -2889,6 +2935,11 @@ function handleTick(event){
 		    	warningLight.visible=false
 		    }
 	    } 
+	    if(fireMissle){
+	    	var missle = new Shape()
+	    	missle.graphics.f('red').dc(390,390,2)
+	    	popupBody.addChild(missle)
+	    }
         		
         	// medical readouts
         	
@@ -2904,8 +2955,7 @@ function handleTick(event){
 			
 			// end medical readouts
         // 4 times a second
-        if(i==0 || i==6 || i==12 || i == 18){			        	
-	        
+        if(i==0 || i==6 || i==12 || i == 18){	
 			if(ship.enginesOn){
         		moveShip(ship.orientation)
         		//returnToBridge()
@@ -2945,8 +2995,8 @@ function handleTick(event){
         	if(ship.shieldClass>0 && !ship.shieldsUp) ship.shieldsVal = ship.shieldsVal>0?ship.shieldsVal-20:0
         }
         // twice a second
-        if(i==0 || i==12){ 
-        	
+        if(i==0 || i==12){ 		        	
+	        laserBeam.graphics.clear()        	
         }
         // once a second
         if(i==0){
@@ -3000,7 +3050,7 @@ function handleTick(event){
 	//isInNebula = false
         var top = 24
         i = i<top?i+1:0
-        // if(debug){
+        if(debug){
 	        $j('#debugInfo').html(
 	        	'<div>Time '+game.date.hour+':'+game.date.minute+' '+game.date.day+'/'+game.date.month+'/'+game.date.year+'</div>'+
 	        	'<div>Ship Status: '+getStatus[ship.status]+'</div>'+
@@ -3013,7 +3063,7 @@ function handleTick(event){
 	        	'<div>Planet Number: '+currentPlanetNumber+'</div>'+
 	        	'<div>DoorOpening: '+doorOpening+'</div>'
 	        )
-	    // }
+	    }
     }
 	buildDialogScreen()
     stage.update()
@@ -3190,8 +3240,8 @@ function collisionDetection(){
 			atFlux(underShip.name)
         }else if(underShip.name.includes('dust')){			        	
 			atDust()
-        }else if(underShip.name.includes('encounter')){			        	
-			
+        }else if(underShip.name.includes('encounter')){	
+			console.log("underShip.name", underShip.name);
 			enterEncounter(underShip.name.split('-')[1])
         }
     }else{
@@ -3361,8 +3411,8 @@ function moveShip(dir){
 	    			
 	    		}else{
 	    			// move ship in direction on first tap
-	    			ship.enginesOn = true
-	    			var moveDist = 0.1 //0.02*ship.engineClass			
+	    			ship.enginesOn = true		
+	    			var moveDist = 0.1 //0.02*ship.engineClass	
 		        	if(dir==225){
 		        		// down left
 		        		// if(shipIsInHyperspace()){
