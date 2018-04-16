@@ -52,30 +52,32 @@ function drawShip(options){
 		//.es()
 		
 		.f(baseColor)
-		.mt(50,30)
-		.lt(25,30)
-		.lt(25,27)
-		.lt(40,15)
-		.lt(60,15)
-		.lt(75,27)
-		.lt(75,30)
+		.mt(50,30-20+5)
+		.lt(25,30-20+5)
+		.lt(25,27-14+5)
+		.lt(40,15+10+5)
+		.lt(60,15+10+5)
+		.lt(75,27-14+5)
+		.lt(75,30-20+5)
 		.s(darkColor)
 		.ss(0.25)
-		.dr(28,27,15,4)
-		.dr(58,27,15,4)
+		.dr(28-5,27-13,15+5,3)
+		.dr(58,27-13,15+4,3)
 		// bridge
 		.s(darkColor).ss(0.5)
 		.beginRadialGradientFill([lightColor,baseColor], [0, 1], 50, 20, 0, 50, 20, 15)
 		.dc(50,20,15).ef()
-		.f(darkColor)
-		.mt(40,20)
-		.qt(40,10,50,10)
-		.qt(60,10,60,20)
-		.lt(55,20)
-		.qt(55,15,50,15)
-		.qt(45,15,45,20)
-		.lt(40,20)
-		.ef()
+		.s(darkColor).ss(2,'round')
+
+        .mt(41,11)
+        .qt(50,4,59,11)
+		// .qt(37,7,50,7)
+		// .qt(63,7,63,20)
+		// .lt(60,20)
+		// .qt(55,15,50,15)
+		// .qt(40,15,40,20)
+		// .lt(40,20)
+		// .ef()
 		.es()
 	details.graphics
 		.s(darkColor).ss(0.25)
@@ -167,11 +169,11 @@ function drawShip(options){
 			}else{
 				x = 55
 			}	
-			shipShape.graphics.beginFill(greyColor).dr(x,y,5,5)
+			shipShape.graphics.f(greyColor).dr(x,y,5,5).es()
 			if(!isEven(i))
-				shipShape.graphics.beginFill(greyColor).dr(x-2,y+2,2,1)
+				shipShape.graphics.f(greyColor).dr(x-2,y+2,2,1)
 			else			
-				shipShape.graphics.beginFill(greyColor).dr(x+5,y+2,2,1)			
+				shipShape.graphics.f(greyColor).dr(x+5,y+2,2,1)			
 		}
 		for (var i = 0; i < ship.blastoPods; i++) {
 			if(isEven(i)){
@@ -180,7 +182,7 @@ function drawShip(options){
 			}else{
 				x = 55
 			}	
-			shipShape.graphics.beginFill(lightColor).dr(x,y,5,5)						
+			shipShape.graphics.f(lightColor).dr(x,y,5,5)						
 		}
 		for (var i = 0; i < ship.jumpPods; i++) {
 			if(isEven(i)){
@@ -189,7 +191,7 @@ function drawShip(options){
 			}else{
 				x = 55
 			}	
-			shipShape.graphics.beginFill(darkColor).dr(x,y,5,5)						
+			shipShape.graphics.f(darkColor).dr(x,y,5,5)						
 		}
 	}
 	engineFlare.visible = ship.enginesOn
@@ -256,6 +258,7 @@ dorsalHullShape.graphics.f(dorsalHullColor)
 		// .lt(40*scale,20*scale)
 		// .ef()
 		// .es()
+//dorsalHullShape.rotation=180
 bulkHeadWallsShape = new Shape()
 bulkHeadWallsShape.graphics.s("black").ss(20,"square","miter",1)
     .mt(100,170)
@@ -267,7 +270,7 @@ bulkHeadWallsShape.graphics.s("black").ss(20,"square","miter",1)
     .lt(200,140)
     .lt(200,180)
 ventralHullShape = new Shape()
-ventralHullShape.graphics.f(ventralHullColor)
+ventralHullShape.graphics.f(ventralHullColor).s('black').ss(2)
     .mt(10,200)
     .lt(10,180)
     .lt(100,140)
@@ -280,6 +283,9 @@ ventralHullShape.graphics.f(ventralHullColor)
     .lt(200,100)
     .lt(220,140)
     .lt(290,200)
+ventralHullShape.regX=300
+ventralHullShape.regY=300
+ventralHullShape.rotation=180
 wiringShape = new Shape()
 wiringShape.graphics.s("rgba(255,0,0,0.5)").ss(4,"square","miter",1)
     .mt(150,220)
@@ -415,6 +421,9 @@ wiringShape.graphics.s("rgba(255,0,0,0.5)").ss(4,"square","miter",1)
     .lt(160,200)
     .lt(160,210)
     .lt(160,220)
+wiringShape.regX=300
+wiringShape.regY=300
+wiringShape.rotation=180
 componentsShape = new Shape()
 componentsShape.graphics.f("rgba(0,0,255,0.5)")
     .mt(160,60)

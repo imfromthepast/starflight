@@ -1059,6 +1059,7 @@ function handleAlienShipClick(event){
 	scanship = false
 	attackShip = false
 }
+
 function buildShipScanPopup(shipInfo){
 	var options = {title:'ship scan results',width:350,height:500,x:0,y:150}
 	var shipScanContainer = new Container()
@@ -1067,7 +1068,8 @@ function buildShipScanPopup(shipInfo){
 		.s(blue).ss(borderWidth)
 		.f('black')
 		.rr(0,0,options.width,options.height,borderRadius)
-		//.f('grey')
+		// .f('white')
+		// .rr(10,50,330,260,borderRadius)
 		.beginRadialGradientFill(['rgba(0,80,255,0.05)','rgba(0,80,255,0.5)'], [0,0.85], 175, 180, 0, 175, 180, 250)
 		.rr(10,50,330,260,borderRadius)
 		.ef().es()
@@ -1175,9 +1177,58 @@ function buildStarmapPopup(){
 }
 function buildSplashScreenPopup(){
 	//stage.removeAllChildren()
-	showPopup({title:'STARFLIGHT',width:windowWidth,height:windowHeight,x:0,y:0})
-	var playGameButton = drawButton({x:700,width:200,label:'Play Game',onClick:handlePlayGameButtonClick})
-	popupButtons.addChild(playGameButton)
+	showPopup({borderWidth:0,width:windowWidth,height:windowHeight,x:0,y:0})
+	var starflightTitleb = new Text('STARFLIGHT','162px space',blue)
+	starflightTitleb.textAlign='center'
+	starflightTitleb.x=800
+	starflightTitleb.y=100
+	var starflightTitlew = new Text('STARFLIGHT','162px space','#fff')
+	starflightTitlew.textAlign='center'
+	starflightTitlew.x=798
+	starflightTitlew.y=98
+	var wLine = new Shape()
+	wLine.graphics
+		.f('white')
+		.rr(0,200,200,16,8)
+		.f(blue)
+		.rr(2,202,200,16,8)
+
+		.f('white')
+		.rr(230,145,150,16,8)
+		.f(blue)
+		.rr(230,147,150,16,8)
+
+		.f('white')
+		.rr(1430,145,150,16,8)
+		.f(blue)
+		.rr(1430,147,150,16,8)
+
+	var planet1 = new Shape()
+	planet1.graphics
+		// .f(blue)
+		.beginRadialGradientFill(['#fff','#268'],[0,1],1200,800,100,1200,2200,1600)
+		.dc(1200,2200,1600)
+		.f('rgba(255,255,255,0.25')
+		.s('#ddd').ss(1)
+		.dc(1200,2200,1610)
+
+	var planet2 = new Shape()
+	planet2.graphics
+		.beginRadialGradientFill(['rgba(255,255,255,0.75)','#069'],[0,1],400,380,0,400,400,50)
+		.dc(400,400,50)
+
+	var planet3 = new Shape()
+	planet3.graphics
+		.beginRadialGradientFill(['rgba(255,255,255,0.5)','#444'],[0,1],900,580,0,900,600,60)
+		.dc(900,600,60)
+	var splashStars = new Shape()
+	
+	for (var i = 0; i < 50; i++) {
+		splashStars.graphics.f('#fff').dc(rifi(0,1600),rifi(0,900),rifi(1,3)).ef()
+	}
+	var playGameButton = drawButton({x:700,y:430,width:200,label:'Play Game',onClick:handlePlayGameButtonClick})
+	//popupButtons.addChild(playGameButton)
+	popupBody.addChild(splashStars,starflightTitlew,wLine,starflightTitleb,planet3,planet1,planet2,playGameButton)
 }
 function handlePlayGameButtonClick(){	
 // 	gameSave = {}
@@ -1393,7 +1444,9 @@ function showPopup(options){
 	options = options==null?{}:options
 	options.width = options.width==null?popupWidth:options.width
 	options.height = options.height==null?popupHeight:options.height
+	options.borderWidth = options.borderWidth==null?borderWidth:options.borderWidth
 	popupBodyWidth = options.width-20
+
 	col12=popupBodyWidth
 	col11=popupBodyWidth*(11/12)
 	col10=popupBodyWidth*(10/12)
@@ -1421,7 +1474,8 @@ function showPopup(options){
 	popupButtons.y = h-50
 
 	var popupBg = new Shape()
-	popupBg.graphics.beginStroke(blue).ss(borderWidth).beginFill('rgba(0,0,0,1)')
+	if(options.borderWidth>0) popupBg.graphics.s(blue).ss(options.borderWidth)
+	popupBg.graphics.f('rgba(0,0,0,1)')
 		.rr(0,0,w,h,borderRadius)
 	var popupTitle = new Text(makeCap(options.title),'18px '+font,'white')
 	popupTitle.x=options.width/2
