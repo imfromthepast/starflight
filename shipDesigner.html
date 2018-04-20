@@ -20,6 +20,8 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	    <!-- Font Awesome -->
+	    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
 	    <script>	    	
 			(function(w,e,c,i,j){
 				e=w.createjs||console.warn('EaselJS clip plugin: EaselJS not found.'),
@@ -51,6 +53,7 @@
 				/*max-width: 100%;*/
 				/*height: auto;*/
 				border: 1PX solid grey;
+				/*display: inline-block !important;*/
 			}
 			#debugInfo{
 				/*position: absolute;
@@ -71,58 +74,149 @@
 	            font-style: normal;
 	        }
 	        .bottom-padded{padding-bottom: 10px;}
-	        pre{
-	        	height:530pt;
+	        .top-padded{padding-top: 10px;}
+	        #code{
+	        	height:400pt;
 	        	overflow-y: scroll;
+	        	width: 100%;
+	        	resize: none;
 	        }
 
 			.button:focus {outline:0;}
+			.tools,.artboard,.layers{
+				display: inline-block;
+				vertical-align: top;
+			}
+			.tool-options{margin-left:50px;height:30px;}
+			.inputfile {
+				width: 0.1px;
+				height: 0.1px;
+				opacity: 0;
+				overflow: hidden;
+				position: absolute;
+				z-index: -1;
+			}
+			/*.inputfile + label {
+    font-size: 1.25em;
+    font-weight: 700;
+    color: white;
+    background-color: black;
+    display: inline-block;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: red;
+}*/
 	    </style>	
 	</head>
 	<body onload="init()"> 
     	<div class="container-fluid">
-    		<h1>STARFLIGHT SHIP DESIGNER</h1>    		
-			<div class="col-xs-7">
-				<canvas id="stage" height="1000px" width="1000px"></canvas>
-				<div id="debugInfo"></div>
+			<div class="col-xs-11 xcol-xs-offset-1">
+				<h4>STARFLIGHT SHIP DESIGNER</h4>  
+				<form class="tool-options form-inline">
+				  	<label>Options</label> | 
+				  	<div class="form-group tool-option c-option">
+				    	<label for="circleRadius">Radius</label>
+				    	<input id="circleRadius" value="10" class="form-control input-sm" style="width:50px"/>
+				  	</div>
+				  	<div class="form-group tool-option r-option">
+				    	<label for="rectW">W</label>
+						<input id="rectW" value="10" class="form-control input-sm" style="width:50px"/>
+					</div>
+				  	<div class="form-group tool-option r-option">
+				    	<label for="rectH">H</label>
+						<input id="rectH" value="10" class="form-control input-sm" style="width:50px"/>
+				  	</div>
+				  	<div class="form-group tool-option pc-option pd-option">
+				    	<label for="lineW">Stroke Weight</label>
+						<input id="lineW" value="10" class="form-control input-sm" style="width:50px"/>
+				  	</div>
+				  	<div class="form-group tool-option pc-option pd-option r-option c-option">
+				    	<label for="fillColor">Fill Color</label>
+						<select id="fillColor" value="#696969" class="form-control input-sm">
+							<option value="#696969">Dark Grey</option>
+							<option value="#808080">Base Grey</option>
+							<option value="#D3D3D3">Light Grey</option>
+							<option value="#DC143C">Red</option>
+							<option value="#6B8E23">Green</option>
+							<option value="#B0C4DE">Blue</option>
+							<option value="#F5FFFA">White</option>
+							<option value="#2F4F4F">Black</option>
+						</select>
+				  	</div>
+				  	<div class="form-group tool-option pc-option pd-option r-option c-option">
+				    	<label for="strokeColor">Stroke Color</label>
+						<select id="strokeColor" value="#2F4F4F" class="form-control input-sm">
+							<option value="#696969">Dark Grey</option>
+							<option value="#808080">Base Grey</option>
+							<option value="#D3D3D3">Light Grey</option>
+							<option value="#DC143C">Red</option>
+							<option value="#6B8E23">Green</option>
+							<option value="#B0C4DE">Blue</option>
+							<option value="#F5FFFA">White</option>
+							<option value="#2F4F4F">Black</option>
+							<option value="" selected="true">None</option>
+						</select>
+				  	</div>
+				</form>							
 			</div>
-			<div class="col-xs-5">
-				<h4>Tools</h4>
-				<div class="btn-toolbar bottom-padded">
-					<div class="btn-group">
-						<div class="btn btn-default" id="dr-btn" onclick="setEventType('pressmove')">Draw</div>
-						<div class="btn btn-default" id="cl-btn" onclick="setEventType('click')">Click</div>
-						<div class="btn btn-default" id="ci-btn" onclick="">Circle</div>
+			<div class="col-xs-12"> 		
+				<div class="tools">
+					<div class="btn-toolbar bottom-padded">
+						<div class="btn-group-vertical">
+							<div class="btn btn-default btn-tool" id="pd-btn" onclick="setTool('pd','pressmove')">
+								<i class="fa fa-paint-brush"></i>
+							</div>
+							<div class="btn btn-default btn-tool" id="pc-btn" onclick="setTool('pc','click')">
+								<i class="glyphicon glyphicon-pencil"></i>
+							</div>
+							<div class="btn btn-default btn-tool" id="c-btn" onclick="setTool('c','click')">
+								<i class="fa fa-circle"></i>
+							</div>
+							<div class="btn btn-default btn-tool" id="r-btn" onclick="setTool('r','click')">
+								<i class="fa fa-stop"></i>
+							</div>
+						</div>
 					</div>
-					<div class="btn btn-default" id="ci-btn" onclick="mirrored=!mirrored">Mirror</div>
+				</div>		
+				<div class="artboard">
+					<canvas id="stage" class="img-responsive" height="1000px" width="1000px"></canvas>
+					<div id="debugInfo"></div>
 				</div>
-				<h4>Hull</h4>
-				<div class="btn-toolbar bottom-padded">
-					<div class="btn-group">
-						<div class="btn btn-default" id="vh-btn" onclick="setMode('vh')">Ventral Hull</div>
-						<div class="btn btn-default" id="bw-btn" onclick="setMode('bw')">Bulkhead Walls</div>
-						<div class="btn btn-default" id="dh-btn" onclick="setMode('dh')">Dorsal Hull</div>
+				<div class="layers">
+					<h4>Layers</h4>
+					<div class="btn-group-vertical bottom-padded">
+						<div class="btn btn-default btn-mode" id="dorsalHull-btn" onclick="setMode('dorsalHull')">Top Hull</div>
+						<div class="btn btn-default btn-mode" id="bulkheadWalls-btn" onclick="setMode('bulkheadWalls')">Bulkhead Walls</div>
+						<div class="btn btn-default btn-mode" id="wiring-btn" onclick="setMode('wiring')">Wiring</div>
+						<div class="btn btn-default btn-mode" id="components-btn" onclick="setMode('components')">Components</div>
+						<div class="btn btn-default btn-mode" id="bioSigns-btn" onclick="setMode('bioSigns')">Bio Signatures</div>
+						<div class="btn btn-default btn-mode" id="paths-btn" onclick="setMode('paths')">Paths</div>
+						<div class="btn btn-default btn-mode" id="ventralHull-btn" onclick="setMode('ventralHull')">Bottom Hull</div>
+						<div class="btn btn-default btn-mode" id="connectionPoint-btn" onclick="setMode('connectionPoint')">Connection Points</div>
+					</div>
+					<h4>Preview</h4>
+					<div class="preview">
+						<canvas id="preview" height="600px" width="300px"></canvas>
 					</div>
 				</div>
-				<h4>Systems</h4>
-				<div class="btn-toolbar bottom-padded">
-					<div class="btn-group">
-						<div class="btn btn-default" id="wi-btn" onclick="setMode('wi')">Wiring</div>
-						<div class="btn btn-default" id="co-btn" onclick="setMode('co')">Components</div>
-						<div class="btn btn-default" id="cp-btn" onclick="setMode('cp')">Connection Points</div>
-					</div>
-				</div>
-				<h4>Bio</h4>
-				<div class="btn-toolbar bottom-padded">
-					<div class="btn-group">
-						<div class="btn btn-default" id="bs-btn" onclick="setMode('bs')">Bio Signatures</div>
-						<div class="btn btn-default" id="pa-btn" onclick="setMode('pa')">Paths</div>
-					</div>
-				</div>
-				<h4>Code</h4>
-				<pre></pre>
 			</div>
-			
+			<div class="col-xs-12">				
+				<h6>Code</h6>
+				<div class="btn-toolbar bottom-padded">
+					<div class="btn-group">
+						<div class="btn btn-default" onclick="codeFormat=0;check()">Minify Code</div>
+						<div class="btn btn-default" onclick="codeFormat=1;check()">Pretty Code</div>
+					</div>
+					<div class="btn btn-default" id="load" onclick="loadShape()">Reload Shape</div>
+					<input type="file" name="file" id="file" class="inputfile" onchange="handleFiles(this.files)"/>
+					<label for="file" class="btn btn-default">Open</label>
+					<div class="btn btn-default" id="create">Save</div>
+					<a download="shapeJSON.js" id="downloadlink" style="display: none" class="btn btn-link">Download</a>
+				</div>
+				<textarea id="code" cols="50" class="form-control"></textarea>					
+			</div>	
     	</div>    
     </body>  
     <script>
@@ -130,30 +224,29 @@
 		use_namespace('createjs.*')
 		var debug = true,
 			stage = new Stage('stage'),
+			preview = new Stage('preview'),
 			gridCont = new Container(),
 			drawingCont = new Container(),
+			previewCont = new Container(),
+			scanlinesCont = new Container(),
 			gridCenterLine = new Shape(),
-
-			ventralHullPoints = [],
-			bulkHeadPoints = [],
-			dorsalHullPoints = [],
-			wiringPoints = [],
-			componentsPoints = [],
-			connectionPointPoints = [],
-			bioSignsPoints = [],
-			pathsPoints = [],
-
 			debugLogArray = [],
-
-			eventType = 'click',
+			eventType = '',
+			tool = '',
+			circleRadius=10,
 			preCode = '',
 			doCheck = true,
 			drawingStart=false,
 			tkr = createjs.Ticker,
-			drawMode = 'vh',
-			mirrored = false
+			drawMode = '',
+			mirrored = false,
+			codeFormat=0,
+			loaded=false,
+			shapeJSON = [[],[],[],[],[],[],[],[]],
+			shapeNames = ['ventralHull','bulkheadWalls','wiring','components','paths','bioSigns','dorsalHull','connectionPoint']
 
 		function init(){
+			$j('.tool-option').hide()
 			var gridBg = new Shape()
 			gridBg.graphics.f('white').dr(0,0,1000,1000)
 			gridCenterLine.graphics
@@ -162,7 +255,8 @@
 				.lt(1000,500)
 				.mt(500,0)
 				.lt(500,1000)
-			gridCont.addChild(gridBg,gridCenterLine)
+			gridCenterLine.mouseEnabled=false
+			gridCont.addChild(gridCenterLine)
 			for (var i = 0; i < 9; i++) {
 				var h10GridLine = new Shape(),
 					inc = 100*(i+1)
@@ -172,6 +266,7 @@
 					.lt(1000,inc)
 					.mt(inc,0)
 					.lt(inc,1000)
+				h10GridLine.mouseEnabled=false
 				gridCont.addChild(h10GridLine)
 			}
 			for (var i = 0; i < 99; i++) {
@@ -183,17 +278,39 @@
 					.lt(1000,inc)
 					.mt(inc,0)
 					.lt(inc,1000)
+				h10GridLine.mouseEnabled=false
 				gridCont.addChild(h10GridLine)
 			}
-			setEventType('click')
-			stage.addChild(gridCont,drawingCont)	
+			var previewBg = new Shape()
+			previewBg.graphics
+				.f('black')
+				.dr(0,0,300,600)
+				.s('white')
+				.ss(1)
+				.beginRadialGradientFill(['rgba(0,80,255,0.05)','rgba(0,80,255,0.5)'], [0,0.85], 150, 150, 0, 150, 150, 250)
+				.dr(0,0,300,300)
+				.ef().es()
+			preview.addChild(previewBg,previewCont,scanlinesCont)
+
+			setTool('pc','click')
+			setMode('ventralHull')
+			stage.addChild(gridBg,drawingCont,gridCont)	
 			check()
 		}
 		function setEventType(t){
 			eventType = t
-			gridCont.removeAllEventListeners('click')
-			gridCont.removeAllEventListeners('pressmove')
-			gridCont.addEventListener(eventType,handleGridClick)
+			console.log("eventType", eventType);
+			stage.removeAllEventListeners('click')
+			stage.removeAllEventListeners('pressmove')
+			stage.addEventListener(eventType,handleGridClick)
+		}
+		function setTool(t,et){
+			$j('.btn-tool').removeClass('active')
+			$j('#'+t+'-btn').addClass('active')
+			$j('.tool-option').hide()
+			$j('.'+t+'-option').show()
+			tool = t
+			setEventType(et)
 		}
 		function check(){
 			doCheck=true
@@ -203,40 +320,53 @@
 			y = Math.round(event.stageY/10)*10
 			debugLog(event+' snap to '+x+','+y)
 
-			if(drawMode=='vh'){
+			if(drawMode=='ventralHull'){
 				// drawing Ventral Hull
-				if(!pointArrayDupCheck(x,y,ventralHullPoints)) ventralHullPoints.push([x,y])
-
-			}else if(drawMode=='bw'){
-				// drawing BulkHead Walls
-				if(!pointArrayDupCheck(x,y,bulkHeadPoints)) bulkHeadPoints.push([x,y])
-
-			}else if(drawMode=='dh'){
+				if(tool=='pd' || tool=='pc'){
+					createShapeJSON(x,y,drawMode,$j('#fillColor').val(),parseInt($j('#strokeColor').val()),parseInt($j('#lineW').val()))
+				}else if(tool=='c'){
+					createShapeJSON(x,y,drawMode,$j('#fillColor').val(),parseInt($j('#strokeColor').val()),parseInt($j('#lineW').val()),$j('#circleRadius').val())
+				}else if(tool=='r'){
+					createShapeJSON(x,y,drawMode,$j('#fillColor').val(),parseInt($j('#strokeColor').val()),parseInt($j('#lineW').val()),null,$j('#rectW').val(),$j('#rectH').val())
+				}
+			}else if(drawMode=='bulkheadWalls'){
+				// drawing Bulkhead Walls
+				if(tool=='pd' || tool=='pc'){
+					createShapeJSON(x,y,drawMode,null,'black',10)
+				}else if(tool=='c'){
+					createShapeJSON(x,y,drawMode,null,'black',10,$j('#circleRadius').val())
+				}
+			}else if(drawMode=='dorsalHull'){
 				// drawing Dorsal Hull
-				if(!pointArrayDupCheck(x,y,dorsalHullPoints))dorsalHullPoints.push([x,y])
-
-			}else if(drawMode=='wi'){
+				if(tool=='pd' || tool=='pc'){
+					createShapeJSON(x,y,drawMode,$j('#fillColor').val())
+				}else if(tool=='c'){
+					createShapeJSON(x,y,drawMode,$j('#fillColor').val(),null,null,$j('#circleRadius').val())
+				}else if(tool=='r'){
+					createShapeJSON(x,y,drawMode,$j('#fillColor').val(),null,null,null,$j('#rectW').val(),$j('#rectH').val())
+				}
+			}else if(drawMode=='wiring'){
 				// drawing Wiring
-				if(!pointArrayDupCheck(x,y,wiringPoints))wiringPoints.push([x,y])
-
-			}else if(drawMode=='co'){
+				createShapeJSON(x,y,drawMode,null,'rgba(255,0,0,0.5)',4)
+			}else if(drawMode=='components'){
 				// drawing Components
-				if(!pointArrayDupCheck(x,y,componentsPoints))componentsPoints.push([x,y])
-
-			}else if(drawMode=='cp'){
+				if(tool=='pd' || tool=='pc'){
+					createShapeJSON(x,y,drawMode,'rgba(0,0,255,0.5)')
+				}else if(tool=='c'){
+					createShapeJSON(x,y,drawMode,'rgba(0,0,255,0.5)',null,null,$j('#circleRadius').val())
+				}else if(tool=='r'){
+					createShapeJSON(x,y,drawMode,'rgba(0,0,255,0.5)',null,null,null,$j('#rectW').val(),$j('#rectH').val())
+				}
+			}else if(drawMode=='connectionPoint'){
 				// drawing Connection Point
-				connectionPointPoints.push([x,y])
-
-			}else if(drawMode=='bs'){
+				createShapeJSON(x,y,drawMode,'rgba(0,0,0,0.5)','black',1,20)
+			}else if(drawMode=='bioSigns'){
 				// drawing Bio Signs
-				bioSignsPoints.push([x,y])
-
-			}else if(drawMode=='pa'){
+				createShapeJSON(x,y,drawMode,'rgba(0,100,0,0.5)',null,null,10)
+			}else if(drawMode=='paths'){
 				// drawing Paths
-				if(!pointArrayDupCheck(x,y,pathsPoints))pathsPoints.push([x,y])
-
+				createShapeJSON(x,y,drawMode,null,'"#00f"',5)
 			}
-			//drawingStart=false
 			check()
 		}
 		function pointArrayDupCheck(x,y,arr){
@@ -247,7 +377,7 @@
 			}				
 		}
 		function setMode(m){
-			$j('.btn').removeClass('active')
+			$j('.btn-mode').removeClass('active')
 			$j('#'+m+'-btn').addClass('active')
 			drawMode=m
 			drawingStart=true
@@ -257,68 +387,175 @@
 			debugLogArray.push(l)
 			check()
 		}
-		function drawShape(n,p,f,s,ss,r){
-			shape = new Shape()
-			preCode+=n+'Shape = new Shape()\n'
-			if(mirrored){
-				reflectedArray = p
-				reflectedArray.reverse()
-				// for (var i = 0; i < reflectedArray.length; i++) {
-				// 	reflectedArray[i]
-				// }
-				p = p.concat(reflectedArray)
-				console.log("reflectedArray", reflectedArray);
-				console.log("p", p);
+		var firstPoint = []
+		function createShapeJSON(x,y,n,f,s,ss,r,w,h){
+			var sj = shapeJSON[shapeNames.indexOf(n)],			
+				newShape = false				
+			if(sj.length==0){
+				newShape = true
+			}else{
+				if(sj[sj.length-1].t=='cp'||sj[sj.length-1].t=='dr'||sj[sj.length-1].t=='dc'){
+					newShape=true
+				}
 			}
-			for (var i = 0; i < p.length; i++) {
-				x = p[i][0]
-				y = p[i][1]
 				if(r==null){	
 					// lines
-					if(i==0){				
-						if(f!=null){
-							shape.graphics.f(f).s(f).ss(1)
-							preCode+=n+'Shape.graphics.f('+f+')\n'
+					console.log("lines");
+					if(newShape){
+						console.log('new shape')		
+						if(f!=null){ //&& w==null && h==null){
+							sj.push({t:'f',v:[f]})
+						}else{
+							// sj.push({t:'f',v:[]})
 						}
 						if(s!=null){
-							shape.graphics.s(s).ss(ss,"square","miter",1)
-							preCode+=n+'Shape.graphics.s('+s+').ss('+ss+',"square","miter",1)\n'
-						}
-						shape.graphics.mt(x,y)
-						preCode+='    .mt('+x+','+y+')\n'
-					}else{
-						if(x==p[0][0] && y==p[0][1]){
-							shape.graphics.cp()
-							preCode+='    .cp()\n'
+							sj.push({t:'s',v:[s]})
+							sj.push({t:'ss',v:[ss,'square','miter',1]})
 						}else{
-							shape.graphics.lt(x,y)
-							preCode+='    .lt('+x+','+y+')\n'
+							// sj.push({t:'s',v:[]})
+							// sj.push({t:'ss',v:[]})
+						}
+						if(h==null && w==null){
+							sj.push({t:'mt',v:[x,y]})
+							firstPoint=[x,y]
+						}else if(h==null&&w!=null){
+							sj.push({t:'dr',v:[x,y,w,w]})
+						}else{
+							sj.push({t:'dr',v:[x,y,w,h]})
+						}
+					}else{
+						console.log('existing shape')
+						if(x==firstPoint[0] && y==firstPoint[1]){
+							sj.push({t:'cp',v:[]})
+							firstPoint = []
+						}else{
+							sj.push({t:'lt',v:[x,y]})
 						}
 					}
 				}else{
-					if(i==0){				
-						preCode+=n+'Shape.graphics\n'
-					}
 					// circles
 					if(f!=null && s==null){
-						shape.graphics.f(f).dc(x,y,r).ef()
-						preCode+='    .f('+f+').dc('+x+','+y+','+r+').ef()\n'
+						sj.push({t:'f',v:[f]})
+						sj.push({t:'dc',v:[x,y,r]})
+						sj.push({t:'ef',v:[]})
 					}
 					if(s!=null && f==null){
-						shape.graphics.s(s).ss(ss).dc(x,y,r).es()
-						preCode+='    .s('+s+').ss('+ss+').dc('+x+','+y+','+r+').es()\n'
+						sj.push({t:'s',v:[s]})
+						sj.push({t:'ss',v:[ss]})
+						sj.push({t:'dc',v:[x,y,r]})
+						sj.push({t:'es',v:[]})
 					}
 					if(s!=null && f!=null){
-						shape.graphics.f(f).s(s).ss(ss).dc(x,y,r).ef().es()	
-						preCode+='    .f('+f+').s('+s+').ss('+ss+').dc('+x+','+y+','+r+').ef().es()\n'
-					}		
+						sj.push({t:'f',v:[f]})
+						sj.push({t:'s',v:[s]})
+						sj.push({t:'ss',v:[ss]})
+						sj.push({t:'dc',v:[x,y,r]})
+						sj.push({t:'ef',v:[]})
+						sj.push({t:'es',v:[]})
+					}	
 				}
-			}
+			console.log("sj", sj);
+			shapeJSON[shapeNames.indexOf(n)]=sj
+			console.log("shapeJSON", shapeJSON);
+		}
+		function drawShape(n){			
+			scale = 1
+		    strokeScale = 1
+		    xoff = 0
+		    yoff= 0
+	    	var shape = new Shape()
+	    	for (var i = 0; i < shapeJSON[shapeNames.indexOf(n)].length; i++) {
+	        	var step = shapeJSON[shapeNames.indexOf(n)][i]
+	        	if(step.v.length==0){
+	        		shape.graphics[step.t]()
+	        	}
+	        	if(step.v.length==1){
+	        		if(step.t=='ss'){
+	        			shape.graphics[step.t](step.v[0]*strokeScale)
+	        		}else{
+	        			shape.graphics[step.t](step.v[0])
+	        		}
+	        	}
+	        	if(step.v.length==2){
+	        		shape.graphics[step.t]((step.v[0]+xoff)*scale,(step.v[1]+yoff)*scale)
+	        	}
+	        	if(step.v.length==3){
+	        		shape.graphics[step.t]((step.v[0]+xoff)*scale,(step.v[1]+yoff)*scale,step.v[2]*scale)
+	        	}
+	        	if(step.v.length==4){
+	        		if(step.t=='ss'){
+	        			shape.graphics.ss(step.v[0],step.v[1],step.v[2],step.v[3])
+	        		}else{
+	        			shape.graphics[step.t]((step.v[0]+xoff)*scale,(step.v[1]+yoff)*scale,step.v[2]*scale,step.v[3]*scale)
+	        		}
+	        	}
+	        	if(step.v.length==6){
+	        		shape.graphics[step.t]((step.v[0]+xoff)*scale,(step.v[1]+yoff)*scale,(step.v[2]+xoff)*scale,(step.v[3]+yoff)*scale,(step.v[4]+xoff)*scale,(step.v[5]+yoff)*scale)	        	
+	        	}
+	        }	
+	        shape.mouseEnabled = false	
 			return shape
+		}
+		function loadShape(){
+			loaded=true
+			preCode = $j('#code').val()
+			console.log("preCode", preCode);
+			shapeJSON = JSON.parse(preCode)
+			console.log("Loaded shapeJSON", shapeJSON);
+			check()
+		}
+		function handleFiles(f){
+			var file = f[0]
+			console.log("file", file);
+			var fileReader = new FileReader();
+			fileReader.onload = function(fileLoadedEvent){
+			    var textFromFileLoaded = fileLoadedEvent.target.result;
+			    console.log("textFromFileLoaded", textFromFileLoaded);
+			    // document.getElementById("code").value = textFromFileLoaded;
+			    $j('#code').val(textFromFileLoaded)
+			    loadShape()
+			};
+
+			fileReader.readAsText(file, "UTF-8");
+			// loadShape()
 		}
 		tkr.framerate = 24
 		tkr.addEventListener("tick", handleTick)
-		
+		function getParam(p){
+			var url_string = window.location.href
+			var url = new URL(url_string)
+			var c = url.searchParams.get(p)
+			console.log(c)
+			return c
+		}
+		// function readTextFile(file){
+		//     var rawFile = new XMLHttpRequest()
+		//     rawFile.open("GET", file, false)
+		//     rawFile.onreadystatechange = function (){
+		//         if(rawFile.readyState === 4){
+		//             if(rawFile.status === 200 || rawFile.status == 0){
+		//                 var allText = rawFile.responseText;
+		//                 $j('#code').html(allText)
+		//             }
+		//         }
+		//     }
+		//     rawFile.send(null);
+		// }
+		function minifyCode(){
+			console.log("minifyCode");
+			preCode = JSON.stringify(shapeJSON)
+			// formatJSON()
+		}
+		function prettifyCode(){
+			console.log("prettifyCode");
+			preCode = JSON.stringify(shapeJSON,null,4)
+			// formatJSON()
+		}
+		function formatJSON(){
+			preCode = preCode.replace(/"t"/g,'t')
+			preCode = preCode.replace(/"v"/g,'v')
+		}
+		var lineY = 300
 		function handleTick(event){
 			if(doCheck){
 		        if(debug){
@@ -326,65 +563,112 @@
 			        	$j('#debugInfo').html('<div>'+debugLogArray[i]+'</div>')		        	
 			        }
 			    } 
-			    drawingCont.removeAllChildren()
-			    preCode = ''
-			    dorsalHull = drawShape('dorsalHull',dorsalHullPoints,'dorsalHullColor')
-			    bulkHeadWalls = drawShape('bulkHeadWalls',bulkHeadPoints,null,'"black"',20)
-			    ventralHull = drawShape('ventralHull',ventralHullPoints,'ventralHullColor')
-			    wiring = drawShape('wiring',wiringPoints,null,'"rgba(255,0,0,0.5)"',4)
-			    components = drawShape('components',componentsPoints,'"rgba(0,0,255,0.5)"')
-			    connectionPoint = drawShape('connectionPoint',connectionPointPoints,'"rgba(0,0,0,0.5)"','black',1,20)
-			    bioSigns = drawShape('bioSigns',bioSignsPoints,'"rgba(0,100,0,0.5)"',null,null,10)
-			    paths = drawShape('paths',pathsPoints,null,'"#00f"',5)
-
-				ventralHull.alpha = 0.5
-				bulkHeadWalls.alpha = 0.5
-				dorsalHull.alpha = 0.5
-				wiring.alpha = 0.5
-				components.alpha = 0.5
-				connectionPoint.alpha = 0.5
-				bioSigns.alpha = 0.5
-				paths.alpha = 0.5
-				
-				if(drawMode=='vh'){
-					// drawing Ventral Hull
-					ventralHull.alpha = 1
-
-				}else if(drawMode=='bw'){
-					// drawing BulkHead Walls
-					bulkHeadWalls.alpha = 1
-
-				}else if(drawMode=='dh'){
-					// drawing Ventral Hull
-					dorsalHull.alpha = 1
-
-				}else if(drawMode=='wi'){
-					// drawing Ventral Hull
-					wiring.alpha = 1
-
-				}else if(drawMode=='co'){
-					// drawing Ventral Hull
-					components.alpha = 1
-
-				}else if(drawMode=='cp'){
-					// drawing Ventral Hull
-					connectionPoint.alpha = 1
-
-				}else if(drawMode=='bs'){
-					// drawing Ventral Hull
-					bioSigns.alpha = 1
-
-				}else if(drawMode=='pa'){
-					// drawing Ventral Hull
-					paths.alpha = 1
-					
+				if(codeFormat==0){
+					minifyCode()
+				}else{
+					prettifyCode()
 				}
-				$j('pre').html(preCode)
-				drawingCont.addChild(ventralHull,bulkHeadWalls,wiring,components,paths,bioSigns,dorsalHull,connectionPoint)
+			    drawingCont.removeAllChildren()
+			    
+			    ventralHull = drawShape('ventralHull')
+			    bulkheadWalls = drawShape('bulkheadWalls')
+			    wiring = drawShape('wiring')
+			    components = drawShape('components')
+			    paths = drawShape('paths')
+			    bioSigns = drawShape('bioSigns')
+			    dorsalHull = drawShape('dorsalHull')
+			    connectionPoint = drawShape('connectionPoint')
+
+				ventralHull.alpha = 0.25
+				bulkheadWalls.alpha = 0.25
+				dorsalHull.alpha = 0.25
+				wiring.alpha = 0.25
+				components.alpha = 0.25
+				connectionPoint.alpha = 0.25
+				bioSigns.alpha = 0.25
+				paths.alpha = 0.25
+				
+				console.log('shapeJSON',shapeJSON)
+				
+				if(drawMode=='ventralHull'){
+					ventralHull.alpha = 1//0.5
+				}else if(drawMode=='bulkheadWalls'){
+					bulkheadWalls.alpha = 1//0.5
+				}else if(drawMode=='dorsalHull'){
+					dorsalHull.alpha = 1//0.5
+				}else if(drawMode=='wiring'){
+					wiring.alpha = 1//0.5
+				}else if(drawMode=='components'){
+					components.alpha = 1//0.5
+				}else if(drawMode=='connectionPoint'){
+					connectionPoint.alpha = 1//0.5
+				}else if(drawMode=='bioSigns'){
+					bioSigns.alpha = 1//0.5
+				}else if(drawMode=='paths'){
+					paths.alpha = 1//0.5					
+				}
+				console.log("preCode", preCode);
+				$j('#code').val(preCode)
+				drawingCont.addChild(ventralHull,bulkheadWalls,wiring,components,paths,bioSigns,dorsalHull,connectionPoint)
 				stage.update()
+				var previewXray = buildShip({shape:shapeJSON,xray:true})
+				previewXray.regX=500
+				previewXray.regY=500
+				previewXray.scaleX=0.25
+				previewXray.scaleY=0.25
+				previewXray.x=150
+				previewXray.y=150
+				previewXray.rotation=270
+				var previewShip = buildShip({shape:shapeJSON,xray:false})
+				previewShip.regX=500
+				previewShip.regY=500
+				previewShip.scaleX=0.25
+				previewShip.scaleY=0.25
+				previewShip.x=150
+				previewShip.y=450
+				previewShip.rotation=270
+				previewCont.removeAllChildren()
+				previewCont.addChild(previewXray,previewShip)
+				preview.update()
 				console.log('stage updated')
 				doCheck=false
 			}
+			var scanHeight = 300
+			scanlinesCont.removeAllChildren()
+			lineY = lineY-4<0?scanHeight:lineY-4
+			var alphaVal = (scanHeight-lineY)/scanHeight
+			var line = new Shape()
+			line.graphics
+				.f('rgba(0,0,0,'+alphaVal+')')//lineY)
+				.s('rgba(0,200,200,0.5)').ss(2)
+				.dr(-10,-10,scanHeight+10,lineY)
+			scanlinesCont.addChild(line)
+			preview.update()
 		}
+		(function () {
+			var textFile = null,
+		 	makeTextFile = function (text) {
+		    	var data = new Blob([text], {type: 'text/plain'});
+
+			    // If we are replacing a previously generated file we need to
+			    // manually revoke the object URL to avoid memory leaks.
+			    if (textFile !== null) {
+			      window.URL.revokeObjectURL(textFile);
+			    }
+		    	textFile = window.URL.createObjectURL(data);
+		    	return textFile;
+		  	};
+
+
+		  	var create = document.getElementById('create'),
+		    	textbox = document.getElementById('code');
+
+		  	create.addEventListener('click', function () {
+		    	var link = document.getElementById('downloadlink');
+		    	link.href = makeTextFile(textbox.value);
+		    	link.style.display = 'block';
+		  	}, false);
+		})();
     </script>
+	<script src="drawShips.js"></script>
 </html>

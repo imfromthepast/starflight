@@ -1084,6 +1084,11 @@ function buildShipScanPopup(shipInfo){
 		alienShip.addChild(asl,asr)
 		alienShip.scaleX=0.25
 		alienShip.scaleY=0.25
+		alienShip.x=165
+		alienShip.y=180
+		alienShip.regX=50
+		alienShip.regY=70
+		alienShip.rotation = -90
 	}else if(shipInfo.type.includes('Mechan')){
 		var alienShip =  drawShip({
 			drawShields    : false,
@@ -1094,6 +1099,20 @@ function buildShipScanPopup(shipInfo){
 			animateShields : false,
 			color 		   : 'rgba(255,255,255,0.1)',
 		})
+		alienShip.x=165
+		alienShip.y=180
+		alienShip.regX=50
+		alienShip.regY=70
+		alienShip.rotation = -90
+	}else if(shipInfo.type.includes('Elowan')){
+		var alienShip = drawTestShip('rgba(255,255,255,0.1)')
+		alienShip.regX=500
+		alienShip.regY=500
+		alienShip.scaleX=0.25
+		alienShip.scaleY=0.25
+		alienShip.x=165
+		alienShip.y=180
+		alienShip.rotation=270
 	}
 	//new Shape()//drawCreature(10,50,elowanShipShapes[0],1,1)
 	// alienShip.graphics
@@ -1114,11 +1133,6 @@ function buildShipScanPopup(shipInfo){
 	// 	.ss(2)
 	// 	.mt(80,135)
 	// 	.lt(55,145)
-	alienShip.x=165
-	alienShip.y=180
-	alienShip.regX=50
-	alienShip.regY=70
-	alienShip.rotation = 90
 	var shipScanTitle = new Text(makeCap(options.title),'18px '+font,'white')
 	shipScanTitle.x=options.width/2
 	shipScanTitle.y=borderRadius
