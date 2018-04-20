@@ -382,6 +382,8 @@ var debug = false,
 	commsOffMedicalReadout	 = new Container(),
 	doctorMedicalReadout	 = new Container(),
 	allMedicalReadoutsCont   = new Container(),
+	scanlinesCont 			 = new Container(),
+	scannerActive 			 = false,
 	laserBeam 				 = new Shape(),
 	attackShip 				 = false,
 	fireMissle				 = false,
@@ -1064,6 +1066,7 @@ function buildShipScanPopup(shipInfo){
 	var options = {title:'ship scan results',width:350,height:500,x:0,y:150}
 	var shipScanContainer = new Container()
 	var shipScanBg = new Shape()
+	scannerActive=true
 	shipScanBg.graphics
 		.s(blue).ss(borderWidth)
 		.f('black')
@@ -1074,11 +1077,11 @@ function buildShipScanPopup(shipInfo){
 		.rr(10,50,330,260,borderRadius)
 		.ef().es()
 
-		var asl = drawGazurtoidShip({color: 'rgba(255,255,255,0.1)'})
-		var asr = flipX(asl)
-		asr.scaleX=-1
-		//asr.scaleY=0.1
-		asr.x=0
+	var asl = drawGazurtoidShip({color: 'rgba(255,255,255,0.1)'})
+	var asr = flipX(asl)
+	asr.scaleX=-1
+	//asr.scaleY=0.1
+	asr.x=0
 	if(shipInfo.type.includes('Gazurtoid')){
 		var alienShip = new Container()
 		alienShip.addChild(asl,asr)
@@ -1152,7 +1155,7 @@ function buildShipScanPopup(shipInfo){
 		'  Class '+shipInfo.laserClass+' lasers',
 		'  Class '+shipInfo.missleClass+' missles'
 	]
-	shipScanContainer.addChild(shipScanBg,alienShip,shipScanTitle)
+	shipScanContainer.addChild(shipScanBg,alienShip,scanlinesCont,shipScanTitle)
 	for (var i = 0; i < scanData.length; i++) {
 		var scanLabel = returnText(scanData[i][0],14,blue)
 		scanLabel.x=10
@@ -2928,7 +2931,9 @@ var doorSpeed = 2
 var tkr = createjs.Ticker
 tkr.framerate = 24
 tkr.addEventListener("tick", handleTick)
-var doCheck = true
+var doCheck = true,
+	scanHeight = 260,
+	lineY = scanHeight
 function handleTick(event){
     if (!event.paused) {
 	    // Store
@@ -3009,19 +3014,33 @@ function handleTick(event){
 	    	popupBody.addChild(missle)
 	    }
         		
-        	// medical readouts
-        	
-		    if(i==0){
-	    		hb=100
-	    	}else if(i==12){
-	    		hb=-100
-	    	}else{
-	    		hb=0
-	    	}
-	    	// console.log("hb", hb);
-        	updateMedical()
+    	// medical readouts
+    	
+	    if(i==0){
+    		hb=100
+    	}else if(i==12){
+    		hb=-100
+    	}else{
+    		hb=0
+    	}
+    	// console.log("hb", hb);
+    	updateMedical()
 			
-			// end medical readouts
+		// end medical readouts
+		
+		if(scannerActive){
+			scanlinesCont.removeAllChildren()
+			lineY = lineY-4<0?scanHeight:lineY-4
+			var alphaVal = (scanHeight-lineY)/scanHeight
+			var scanline = new Shape()
+			scanline.graphics
+				.f('rgba(0,0,0,'+alphaVal+')')//lineY)
+				.s('rgba(0,200,200,0.5)').ss(2)
+				.dr(10,50,330,lineY)
+			scanline.clip = new Graphics().rr(10,50,330,260,borderRadius)
+			scanlinesCont.addChild(scanline) 
+		}
+		
         // 4 times a second
         if(i==0 || i==6 || i==12 || i == 18){	
 			if(ship.enginesOn){
